@@ -2,12 +2,11 @@ package example.todolist.todo;
 
 import example.todolist.AcceptanceTest;
 import example.todolist.fixture.TodoFactory;
-import example.todolist.todo.TodoRepository;
 import example.todolist.todo.domain.Todo;
 import example.todolist.todo.domain.TodoStatus;
 import example.todolist.todo.dto.TodoRequest;
+import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
-import example.todolist.user.domain.User;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,35 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TodoControllerTest extends AcceptanceTest {
     @Autowired
     private TodoRepository todoRepository;
+
+    @Test
+    @DisplayName("특정 할일을 조회할 수 있다.")
+    void find() {
+        // given
+        Todo todo = todoRepository.save(TodoFactory.create("dto 역할과 범위 공부"));
+
+        // when
+        TodoResponse response = findTodo(todo.getId());
+
+        // then
+        assertThat(response.getId()).isEqualTo(todo.getId());
+    }
+
+    @Test
+    @DisplayName("전체 할일을 조회할 수 있다.")
+    void findAll() {
+        // given
+        Todo todo1 = todoRepository.save(TodoFactory.create("dto 역할과 범위 공부"));
+        Todo todo2 = todoRepository.save(TodoFactory.create("Entity는 dto를 알아도 될까?"));
+
+        // when
+        List<TodoResponse> responses = findAllTodo();
+
+        // then
+        assertThat(responses).hasSize(2);
+        assertThat(responses.get(0).getId()).isEqualTo(todo1.getId());
+        assertThat(responses.get(1).getId()).isEqualTo(todo2.getId());
+    }
 
     @Test
     @DisplayName("할일을 등록할 수 있다.")
@@ -45,6 +73,24 @@ class TodoControllerTest extends AcceptanceTest {
         // then
         Todo updatedTodo = todoRepository.findAll().get(0);
         assertThat(updatedTodo.getStatus()).isEqualTo(TodoStatus.IN_PROGRESS);
+    }
+
+    private TodoResponse findTodo(Long id) {
+        return RestAssured
+                .given().log().all()
+                .when().get("/todos/" + id)
+                .then().log().all()
+                .extract()
+                .as(TodoResponse.class);
+    }
+
+    private List<TodoResponse> findAllTodo() {
+        return RestAssured
+                .given().log().all()
+                .when().get("/todos")
+                .then().log().all()
+                .extract()
+                .jsonPath().getList(".", TodoResponse.class);
     }
 
     private void insertTodo(TodoRequest request) {

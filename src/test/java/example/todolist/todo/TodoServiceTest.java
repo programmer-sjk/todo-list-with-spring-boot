@@ -5,6 +5,7 @@ import example.todolist.fixture.UserFactory;
 import example.todolist.todo.domain.Todo;
 import example.todolist.todo.domain.TodoStatus;
 import example.todolist.todo.dto.TodoRequest;
+import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
 import example.todolist.user.UserRepository;
 import example.todolist.user.UserService;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -33,6 +35,36 @@ class TodoServiceTest {
     @BeforeEach
     void setUp() {
         this.todoRepository.deleteAll();
+    }
+
+    @Test
+    @DisplayName("특정 할일을 조회할 수 있다.")
+    void find() {
+        // given
+        Todo todo = todoRepository.save(TodoFactory.create("kafka 공부"));
+
+        // when
+        TodoResponse response = todoService.find(todo.getId());
+
+        // then
+        assertThat(response.getId()).isEqualTo(todo.getId());
+        assertThat(response.getTitle()).isEqualTo(todo.getTitle());
+    }
+
+    @Test
+    @DisplayName("전체 할일을 조회할 수 있다.")
+    void findAll() {
+        // given
+        Todo todo1 = todoRepository.save(TodoFactory.create("스프링 세션과 Redis"));
+        Todo todo2 = todoRepository.save(TodoFactory.create("Elastic Search"));
+
+        // when
+        List<TodoResponse> responses = todoService.findAll();
+
+        // then
+        assertThat(responses).hasSize(2);
+        assertThat(responses.get(0).getId()).isEqualTo(todo1.getId());
+        assertThat(responses.get(1).getId()).isEqualTo(todo2.getId());
     }
 
     @Test
