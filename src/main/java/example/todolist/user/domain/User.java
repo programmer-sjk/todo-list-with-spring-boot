@@ -1,5 +1,6 @@
 package example.todolist.user.domain;
 
+import example.todolist.common.BaseEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Users")
-public class User {
+public class User extends BaseEntity {
     @Id @GeneratedValue
     private Long id;
     @Column(length = 20)
