@@ -26,14 +26,16 @@ public class User {
     private LocalDateTime deletedAt;
     private boolean allowMarketing;
 
-    public User(String name, String nickname, String email, String password, String phone, String role, boolean allowMarketing) {
-        this.name = name;
-        this.nickname = nickname;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.role = UserRole.value(role);
-        this.allowMarketing = allowMarketing;
+    protected User() {}
+
+    public User(Builder builder) {
+        this.name = builder.name;
+        this.nickname = builder.nickname;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.phone = builder.phone;
+        this.role = UserRole.value(builder.role);
+        this.allowMarketing = builder.allowMarketing;
     }
 
     public Long getId() {
@@ -71,4 +73,49 @@ public class User {
     public boolean isAllowMarketing() {
         return allowMarketing;
     }
+
+    public static class Builder {
+        private String name;
+        private String nickname;
+        private String email;
+        private String password;
+        private String phone;
+        private String role;
+        private boolean allowMarketing;
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder nickname(String nickname) {
+            this.nickname = nickname;
+            return this;
+        }
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+        public Builder phone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+        public Builder role(String role) {
+            this.role = role;
+            return this;
+        }
+        public Builder allowMarketing(boolean allowMarketing) {
+            this.allowMarketing = allowMarketing;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+    }
+
 }
