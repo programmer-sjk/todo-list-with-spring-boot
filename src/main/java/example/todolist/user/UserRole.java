@@ -1,5 +1,15 @@
 package example.todolist.user;
 
+import io.micrometer.common.util.StringUtils;
+
 public enum UserRole {
-    NORMAL, ADMIN
+    NORMAL, ADMIN;
+
+    public static UserRole value(String name) {
+        if (StringUtils.isBlank(name)) {
+            return UserRole.NORMAL;
+        }
+
+        return UserRole.valueOf(name);
+    }
 }

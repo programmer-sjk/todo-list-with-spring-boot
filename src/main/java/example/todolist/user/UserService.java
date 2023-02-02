@@ -13,7 +13,7 @@ public class UserService {
     }
 
     @Transactional
-    public void insertUser(User user) {
-        userRepository.save(user);
+    public void insertUser(UserRequest request) {
+        userRepository.save(request.toEntity());
     }
 }

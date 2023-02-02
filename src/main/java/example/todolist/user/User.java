@@ -26,6 +26,16 @@ public class User {
     private LocalDateTime deletedAt;
     private boolean allowMarketing;
 
+    public User(String name, String nickname, String email, String password, String phone, String role, boolean allowMarketing) {
+        this.name = name;
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.role = UserRole.value(role);
+        this.allowMarketing = allowMarketing;
+    }
+
     public Long getId() {
         return id;
     }
