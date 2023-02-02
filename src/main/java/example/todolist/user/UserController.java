@@ -1,11 +1,9 @@
 package example.todolist.user;
 
 import example.todolist.user.dto.UserRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -17,7 +15,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> insertUser(@RequestBody UserRequest request) {
+    public ResponseEntity<Void> insertUser(@RequestBody @Valid UserRequest request) {
         this.userService.insertUser(request);
         return ResponseEntity.ok().build();
     }

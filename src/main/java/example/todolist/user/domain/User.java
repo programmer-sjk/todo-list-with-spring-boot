@@ -24,6 +24,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
     private LocalDateTime deletedAt;
+    @Column(nullable = false)
     private boolean allowMarketing;
 
     protected User() {}
