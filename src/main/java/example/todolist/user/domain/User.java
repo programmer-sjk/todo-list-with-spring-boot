@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     @Comment("사용자 핸드폰 번호")
     @Column(length = 20, unique = true, nullable = false)
     private String phone;
-    
+
     @Comment("사용자 권한")
     @ColumnDefault("'NORMAL'")
     @Enumerated(EnumType.STRING)

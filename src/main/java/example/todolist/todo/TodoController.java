@@ -1,9 +1,9 @@
 package example.todolist.todo;
 
+import example.todolist.common.ResponseMessage;
 import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,24 +18,24 @@ public class TodoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TodoResponse> find(@PathVariable Long id) {
-        return ResponseEntity.ok(todoService.find(id));
+    public ResponseMessage<TodoResponse> find(@PathVariable Long id) {
+        return ResponseMessage.ok(todoService.find(id));
     }
 
     @GetMapping()
-    public ResponseEntity<List<TodoResponse>> findAll() {
-        return ResponseEntity.ok(todoService.findAll());
+    public ResponseMessage<List<TodoResponse>> findAll() {
+        return ResponseMessage.ok(todoService.findAll());
     }
 
     @PostMapping()
-    public ResponseEntity<Void> insertTodo(@RequestBody TodoRequest request) {
+    public ResponseMessage<String> insertTodo(@RequestBody TodoRequest request) {
         todoService.insertTodo(request);
-        return ResponseEntity.ok().build();
+        return ResponseMessage.ok();
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateStatus(@PathVariable Long id, @RequestBody TodoUpdateStatusRequest request) {
+    public ResponseMessage<String> updateStatus(@PathVariable Long id, @RequestBody TodoUpdateStatusRequest request) {
         todoService.updateStatus(id, request);
-        return ResponseEntity.ok().build();
+        return ResponseMessage.ok();
     }
 }

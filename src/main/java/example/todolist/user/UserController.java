@@ -1,5 +1,6 @@
 package example.todolist.user;
 
+import example.todolist.common.ResponseMessage;
 import example.todolist.user.dto.UserRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,14 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> insertUser(@RequestBody @Valid UserRequest request) {
+    public ResponseMessage<String> insertUser(@RequestBody @Valid UserRequest request) {
         userService.insertUser(request);
-        return ResponseEntity.ok().build();
+        return ResponseMessage.ok();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> withDraw(@PathVariable Long id) {
+    public ResponseMessage<String> withDraw(@PathVariable Long id) {
         userService.withDraw(id, LocalDateTime.now());
-        return ResponseEntity.ok().build();
+        return ResponseMessage.ok();
     }
 }

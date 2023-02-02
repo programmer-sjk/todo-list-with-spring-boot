@@ -81,7 +81,7 @@ class TodoControllerTest extends AcceptanceTest {
                 .when().get("/todos/" + id)
                 .then().log().all()
                 .extract()
-                .as(TodoResponse.class);
+                .jsonPath().getObject("data", TodoResponse.class);
     }
 
     private List<TodoResponse> findAllTodo() {
@@ -90,7 +90,7 @@ class TodoControllerTest extends AcceptanceTest {
                 .when().get("/todos")
                 .then().log().all()
                 .extract()
-                .jsonPath().getList(".", TodoResponse.class);
+                .jsonPath().getList("data", TodoResponse.class);
     }
 
     private void insertTodo(TodoRequest request) {
