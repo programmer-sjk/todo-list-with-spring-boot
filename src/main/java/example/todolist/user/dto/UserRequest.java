@@ -3,7 +3,6 @@ package example.todolist.user.dto;
 import example.todolist.user.domain.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public class UserRequest {
@@ -79,7 +78,7 @@ public class UserRequest {
         private String password;
         private String phone;
         private String role;
-        private boolean allowMarketing;
+        private Boolean allowMarketing;
 
         public Builder name(String name) {
             this.name = name;
@@ -111,7 +110,7 @@ public class UserRequest {
             return this;
         }
 
-        public Builder allowMarketing(boolean allowMarketing) {
+        public Builder allowMarketing(Boolean allowMarketing) {
             this.allowMarketing = allowMarketing;
             return this;
         }
