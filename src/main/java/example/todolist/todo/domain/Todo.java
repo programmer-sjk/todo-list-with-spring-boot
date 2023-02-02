@@ -2,13 +2,16 @@ package example.todolist.todo.domain;
 
 import example.todolist.common.BaseEntity;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Comment;
 
 @Entity
 public class Todo extends BaseEntity {
     @Id @GeneratedValue
     private Long id;
+    @Comment("Todo 제목")
     @Column(length = 20)
     private String title;
+    @Comment("Todo 상태")
     @Enumerated(EnumType.STRING)
     private TodoStatus status;
 

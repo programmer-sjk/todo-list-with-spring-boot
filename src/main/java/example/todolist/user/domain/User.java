@@ -3,6 +3,7 @@ package example.todolist.user.domain;
 import example.todolist.common.BaseEntity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
 
@@ -11,20 +12,28 @@ import java.time.LocalDateTime;
 public class User extends BaseEntity {
     @Id @GeneratedValue
     private Long id;
+    @Comment("사용자 이름")
     @Column(length = 20)
     private String name;
+    @Comment("사용자 별명")
     @Column(length = 50, unique = true, nullable = false)
     private String nickname;
     @Column(unique = true)
     private String email;
     @Column(nullable = false)
     private String password;
+
+    @Comment("사용자 핸드폰 번호")
     @Column(length = 20, unique = true, nullable = false)
     private String phone;
+    
+    @Comment("사용자 권한")
     @ColumnDefault("'NORMAL'")
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    @Comment("사용자 탈퇴 시 날짜시간")
     private LocalDateTime deletedAt;
+    @Comment("마케팅 활용동의 여부")
     @Column(nullable = false)
     private boolean allowMarketing;
 
