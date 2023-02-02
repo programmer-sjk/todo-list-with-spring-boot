@@ -40,6 +40,14 @@ public class User extends BaseEntity {
         this.allowMarketing = builder.allowMarketing;
     }
 
+    public void withDraw(LocalDateTime deletedAt) {
+        if (this.deletedAt != null) {
+            throw new IllegalArgumentException("이미 탈퇴한 회원입니다.");
+        }
+
+        this.deletedAt = deletedAt;
+    }
+
     public Long getId() {
         return id;
     }
