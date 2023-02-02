@@ -28,16 +28,19 @@ public class UserRequestTest {
     @ParameterizedTest
     @ValueSource(strings = {"", "  "})
     void validateNickname(String input) {
+        // given
         UserRequest request = new UserRequest.Builder()
                 .nickname(input)
                 .build();
 
+        // when
         Set<ConstraintViolation<UserRequest>> violations = validator.validate(request);
         ConstraintViolation<UserRequest> violation = violations.stream()
                 .filter(v -> v.getPropertyPath().toString().equals("nickname"))
                 .findFirst()
                 .get();
 
+        // then
         assertThat(violation.getMessage()).isEqualTo("공백일 수 없습니다");
     }
 
@@ -45,30 +48,36 @@ public class UserRequestTest {
     @ParameterizedTest
     @ValueSource(strings = {"test", "test@", "@gmail.com"})
     void validateEmail(String input) {
+        // given
         UserRequest request = new UserRequest.Builder()
                 .email(input)
                 .build();
 
+        // when
         Set<ConstraintViolation<UserRequest>> violations = validator.validate(request);
         ConstraintViolation<UserRequest> violation = violations.stream()
                 .filter(v -> v.getPropertyPath().toString().equals("email"))
                 .findFirst()
                 .get();
 
+        // then
         assertThat(violation.getMessage()).isEqualTo("올바른 형식의 이메일 주소여야 합니다");
     }
 
-    @DisplayName("마케팅 활용 동의는 필수 값이다.")
     @Test
+    @DisplayName("마케팅 활용 동의는 필수 값이다.")
     void validateAllowMarketing() {
+        // given
         UserRequest request = new UserRequest.Builder().build();
 
+        // when
         Set<ConstraintViolation<UserRequest>> violations = validator.validate(request);
         ConstraintViolation<UserRequest> violation = violations.stream()
                 .filter(v -> v.getPropertyPath().toString().equals("allowMarketing"))
                 .findFirst()
                 .get();
 
+        // then
         assertThat(violation.getMessage()).isEqualTo("널이어서는 안됩니다");
     }
 }

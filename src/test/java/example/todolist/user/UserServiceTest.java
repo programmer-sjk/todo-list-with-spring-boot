@@ -9,7 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class UserServiceTest {
@@ -25,7 +28,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("사용자를 등록할 수 있다.")
+    @DisplayName("회원을 등록할 수 있다.")
     void insert() {
         // given
         UserRequest request = UserFactory.createUserRequest("골프천재");
@@ -36,5 +39,20 @@ class UserServiceTest {
         // then
         User result = userRepository.findAll().get(0);
         assertThat(result.getNickname()).isEqualTo(request.getNickname());
+    }
+
+    @Test
+    @DisplayName("회원은 탈퇴할 수 있다.")
+    void withDraw() {
+        // given
+        User user = userRepository.save(UserFactory.create("천재 골퍼"));
+        LocalDateTime now = LocalDateTime.of(2023, 2, 3, 12, 18, 0, 0);
+
+        // when
+        userService.withDraw(user.getId(), now);
+
+        // then
+        User result = userRepository.findAll().get(0);
+        assertEquals(result.getDeletedAt(), now);
     }
 }
