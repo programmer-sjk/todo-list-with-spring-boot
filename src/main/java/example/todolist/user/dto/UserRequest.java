@@ -1,4 +1,6 @@
-package example.todolist.user;
+package example.todolist.user.dto;
+
+import example.todolist.user.domain.User;
 
 public class UserRequest {
     private String name;

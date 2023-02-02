@@ -1,4 +1,4 @@
-package example.todolist.user;
+package example.todolist.user.domain;
 
 import io.micrometer.common.util.StringUtils;
 

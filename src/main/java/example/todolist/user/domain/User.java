@@ -1,4 +1,4 @@
-package example.todolist.user;
+package example.todolist.user.domain;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
