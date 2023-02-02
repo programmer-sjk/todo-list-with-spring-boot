@@ -14,9 +14,13 @@ public class Todo extends BaseEntity {
 
     protected Todo() {}
 
-    public Todo(String tile, TodoStatus status) {
+    public Todo(String title) {
         this.title = title;
-        this.status = status;
+        this.status = TodoStatus.TODO;
+    }
+
+    public void updateStatus(String status) {
+        this.status = TodoStatus.valueOf(status);
     }
 
     public Long getId() {

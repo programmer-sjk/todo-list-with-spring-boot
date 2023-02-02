@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -54,5 +55,14 @@ class UserServiceTest {
         // then
         User result = userRepository.findAll().get(0);
         assertEquals(result.getDeletedAt(), now);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 회원탈퇴시 예외가 발생한다.")
+    void withDrawException() {
+        // when & then
+        assertThatThrownBy(() -> userService.withDraw(999L, LocalDateTime.now()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("회원이 존재하지 않습니다.");
     }
 }
