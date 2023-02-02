@@ -18,13 +18,13 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<Void> insertUser(@RequestBody @Valid UserRequest request) {
-        this.userService.insertUser(request);
+        userService.insertUser(request);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> withDraw(@PathVariable Long id) {
-        this.userService.withDraw(id, LocalDateTime.now());
+        userService.withDraw(id, LocalDateTime.now());
         return ResponseEntity.ok().build();
     }
 }

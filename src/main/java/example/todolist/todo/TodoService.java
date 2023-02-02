@@ -2,9 +2,13 @@ package example.todolist.todo;
 
 import example.todolist.todo.domain.Todo;
 import example.todolist.todo.dto.TodoRequest;
+import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @Service
@@ -13,6 +17,17 @@ public class TodoService {
 
     public TodoService(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
+    }
+
+    public TodoResponse find(Long id) {
+        return new TodoResponse(findById(id));
+    }
+
+    public List<TodoResponse> findAll() {
+        return todoRepository.findAll()
+                .stream()
+                .map(TodoResponse::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional
