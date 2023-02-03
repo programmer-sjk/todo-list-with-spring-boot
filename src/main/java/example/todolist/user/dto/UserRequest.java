@@ -33,7 +33,7 @@ public class UserRequest {
 
     public User toEntity(String password) {
         return new User.Builder()
-                .name(name)
+                .username(name)
                 .nickname(nickname)
                 .email(email)
                 .password(password)

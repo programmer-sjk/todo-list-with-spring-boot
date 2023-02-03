@@ -1,7 +1,10 @@
 package example.todolist.user;
 
+import example.todolist.user.domain.CustomUserDetails;
 import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Transactional(readOnly = true)
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -29,6 +32,17 @@ public class UserService {
     public void withDraw(Long id, LocalDateTime now) {
         User user = findById(id);
         user.withDraw(now);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        System.out.println("fuck??????");
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            return null;
+        }
+
+        return new CustomUserDetails(user);
     }
 
     private User findById(Long id) {
