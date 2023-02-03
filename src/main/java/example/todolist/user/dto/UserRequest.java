@@ -31,7 +31,7 @@ public class UserRequest {
         this.allowMarketing = builder.allowMarketing;
     }
 
-    public User toEntity() {
+    public User toEntity(String password) {
         return new User.Builder()
                 .name(name)
                 .nickname(nickname)

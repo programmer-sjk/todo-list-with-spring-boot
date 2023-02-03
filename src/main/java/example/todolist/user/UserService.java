@@ -2,6 +2,7 @@ package example.todolist.user;
 
 import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,14 +12,17 @@ import java.time.LocalDateTime;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public void insertUser(UserRequest request) {
-        userRepository.save(request.toEntity());
+        String password = passwordEncoder.encode(request.getPassword());
+        userRepository.save(request.toEntity(password));
     }
 
     @Transactional

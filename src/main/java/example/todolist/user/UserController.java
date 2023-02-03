@@ -3,7 +3,6 @@ package example.todolist.user;
 import example.todolist.common.ResponseMessage;
 import example.todolist.user.dto.UserRequest;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
