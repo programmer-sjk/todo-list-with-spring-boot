@@ -12,7 +12,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    public static final String[] ACCESS_ALLOW_APIS = {"/", "/users/**"};
+    private static final String[] ACCESS_ALLOW_APIS = {"/", "/users/**"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

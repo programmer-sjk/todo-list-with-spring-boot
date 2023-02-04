@@ -40,13 +40,12 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) {
+        User user = userRepository.findByEmail(email);
 
         if (user == null) {
             return null;
         }
-
         return new CustomUserDetails(user);
     }
 }

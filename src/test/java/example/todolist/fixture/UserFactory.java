@@ -6,7 +6,7 @@ import example.todolist.user.dto.UserRequest;
 public class UserFactory {
     public static User create(String nickname) {
         return new User.Builder()
-                .username("서정국")
+                .name("서정국")
                 .nickname(nickname)
                 .email("test@gamil.com")
                 .password("password")

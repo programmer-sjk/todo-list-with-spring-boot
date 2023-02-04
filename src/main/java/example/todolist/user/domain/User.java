@@ -14,7 +14,7 @@ public class User extends BaseEntity {
     private Long id;
     @Comment("사용자 이름")
     @Column(length = 20)
-    private String username;
+    private String name;
     @Comment("사용자 별명")
     @Column(length = 50, unique = true, nullable = false)
     private String nickname;
@@ -40,7 +40,7 @@ public class User extends BaseEntity {
     protected User() {}
 
     public User(Builder builder) {
-        this.username = builder.username;
+        this.name = builder.name;
         this.nickname = builder.nickname;
         this.email = builder.email;
         this.password = builder.password;
@@ -61,8 +61,8 @@ public class User extends BaseEntity {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public String getNickname() {
@@ -94,7 +94,7 @@ public class User extends BaseEntity {
     }
 
     public static class Builder {
-        private String username;
+        private String name;
         private String nickname;
         private String email;
         private String password;
@@ -102,8 +102,8 @@ public class User extends BaseEntity {
         private String role;
         private boolean allowMarketing;
 
-        public Builder username(String username) {
-            this.username = username;
+        public Builder name(String name) {
+            this.name = name;
             return this;
         }
 
