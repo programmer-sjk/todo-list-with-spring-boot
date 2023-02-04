@@ -34,19 +34,19 @@ public class UserService implements UserDetailsService {
         user.withDraw(now);
     }
 
+    private User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) {
-        System.out.println("fuck??????");
         User user = userRepository.findByUsername(username);
+
         if (user == null) {
             return null;
         }
 
         return new CustomUserDetails(user);
-    }
-
-    private User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
     }
 }
