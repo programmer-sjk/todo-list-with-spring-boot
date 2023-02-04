@@ -15,7 +15,17 @@ public class ResponseMessage<T> {
         return new ResponseMessage<>(data);
     }
 
+    public static ResponseMessage<String> noContent() {
+        return new ResponseMessage<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(), "");
+    }
+
     private ResponseMessage(T data) {
+        this.data = data;
+    }
+
+    private ResponseMessage(int statusCode, String message, T data) {
+        this.statusCode = statusCode;
+        this.message = message;
         this.data = data;
     }
 
