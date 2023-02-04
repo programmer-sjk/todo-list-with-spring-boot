@@ -1,6 +1,7 @@
 package example.todolist.todo.domain;
 
 import example.todolist.common.BaseEntity;
+import example.todolist.user.domain.User;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 
@@ -14,6 +15,9 @@ public class Todo extends BaseEntity {
     @Comment("Todo 상태")
     @Enumerated(EnumType.STRING)
     private TodoStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     protected Todo() {}
 

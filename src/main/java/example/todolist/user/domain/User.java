@@ -1,11 +1,14 @@
 package example.todolist.user.domain;
 
 import example.todolist.common.BaseEntity;
+import example.todolist.todo.domain.Todo;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
@@ -36,6 +39,9 @@ public class User extends BaseEntity {
     @Comment("마케팅 활용동의 여부")
     @Column(nullable = false)
     private boolean allowMarketing;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true )
+    private List<Todo> todos = new ArrayList<>();
 
     protected User() {}
 
