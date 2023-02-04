@@ -45,10 +45,11 @@ class TodoServiceTest {
     @DisplayName("특정 할일을 조회할 수 있다.")
     void find() {
         // given
-        Todo todo = todoRepository.save(TodoFactory.create("kafka 공부"));
+        User user = userRepository.save(UserFactory.create("골프 하수"));
+        Todo todo = todoRepository.save(TodoFactory.createWithUser("kafka 공부", user));
 
         // when
-        TodoResponse response = todoService.find(todo.getId());
+        TodoResponse response = todoService.find(todo.getId(), user.getId());
 
         // then
         assertThat(response.getId()).isEqualTo(todo.getId());
@@ -91,10 +92,15 @@ class TodoServiceTest {
     @DisplayName("할일의 상태를 수정할 수 있다.")
     void updateStatus() {
         // given
-        Todo todo = todoRepository.save(TodoFactory.create("autowired 공부"));
+        User user = userRepository.save(UserFactory.create("골프 하수"));
+        Todo todo = todoRepository.save(TodoFactory.createWithUser("autowired 공부", user));
 
         // when
-        todoService.updateStatus(todo.getId(), TodoFactory.createUpdateStatusRequest(TodoStatus.COMPLETE.name()));
+        todoService.updateStatus(
+                todo.getId(),
+                user.getId(),
+                TodoFactory.createUpdateStatusRequest(TodoStatus.COMPLETE.name())
+        );
 
         // then
         Todo result = todoRepository.findAll().get(0);
@@ -106,10 +112,11 @@ class TodoServiceTest {
     @DisplayName("존재하지 않는 할일의 상태를 수정하면 예외가 발생한다.")
     void updateStatusException() {
         // given
+        User user = userRepository.save(UserFactory.create("골프 하수"));
         TodoUpdateStatusRequest request = TodoFactory.createUpdateStatusRequest(TodoStatus.COMPLETE.name());
 
         // when & then
-        assertThatThrownBy(() -> todoService.updateStatus(999L, request))
+        assertThatThrownBy(() -> todoService.updateStatus(999L, user.getId(), request))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Todo 목록이 존재하지 않습니다.");
     }

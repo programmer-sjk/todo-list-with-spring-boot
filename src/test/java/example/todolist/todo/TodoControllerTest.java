@@ -9,6 +9,7 @@ import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
 import example.todolist.user.UserRepository;
+import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
 import example.todolist.utils.AuthFactory;
 import io.restassured.RestAssured;
@@ -33,7 +34,7 @@ class TodoControllerTest extends AcceptanceTest {
     @DisplayName("특정 할일을 조회할 수 있다.")
     void find() {
         // given
-        Todo todo = todoRepository.save(TodoFactory.create("dto 역할과 범위 공부"));
+        Todo todo = createTodoWithLoginUser("basic vs bearer");
 
         // when
         TodoResponse response = findTodo(todo.getId());
@@ -46,26 +47,23 @@ class TodoControllerTest extends AcceptanceTest {
     @DisplayName("전체 할일을 조회할 수 있다.")
     void findAll() {
         // given
-        Todo todo1 = todoRepository.save(TodoFactory.create("dto 역할과 범위 공부"));
-        Todo todo2 = todoRepository.save(TodoFactory.create("Entity는 dto를 알아도 될까?"));
+        Todo todo = createTodoWithLoginUser("dto 역할과 범위 공부");
 
         // when
         List<TodoResponse> responses = findAllTodo();
 
         // then
-        assertThat(responses).hasSize(2);
-        assertThat(responses.get(0).getId()).isEqualTo(todo1.getId());
-        assertThat(responses.get(1).getId()).isEqualTo(todo2.getId());
+        assertThat(responses).hasSize(1);
+        assertThat(responses.get(0).getId()).isEqualTo(todo.getId());
     }
 
     @Test
     @DisplayName("할일을 등록할 수 있다.")
     void insert() {
         // when
-        insertTodo(TodoFactory.createTodoRequest("dto 역할과 범위 공부"));
+        Todo todo = createTodoWithLoginUser("dto 역할과 범위 공부");
 
         // then
-        Todo todo = todoRepository.findAll().get(0);
         assertThat(todo.getTitle()).isEqualTo("dto 역할과 범위 공부");
     }
 
@@ -73,7 +71,7 @@ class TodoControllerTest extends AcceptanceTest {
     @DisplayName("할일을 수정할 수 있다.")
     void updateStatus() {
         // given
-        Todo todo = todoRepository.save(TodoFactory.create("인텔리제이 코드 변경에 따른 재시작"));
+        Todo todo = createTodoWithLoginUser("인텔리제이 코드 변경에 따른 재시작");
 
         // when
         updateStatus(todo.getId(), TodoFactory.createUpdateStatusRequest(TodoStatus.IN_PROGRESS.name()));
@@ -86,7 +84,7 @@ class TodoControllerTest extends AcceptanceTest {
     private TodoResponse findTodo(Long id) {
         return RestAssured
                 .given().log().all()
-                .header("Authorization", createAuthToken())
+                .header("Authorization", AuthFactory.createLoginToken())
                 .when().get("/todos/" + id)
                 .then().log().all()
                 .extract()
@@ -96,7 +94,7 @@ class TodoControllerTest extends AcceptanceTest {
     private List<TodoResponse> findAllTodo() {
         return RestAssured
                 .given().log().all()
-                .header("Authorization", createAuthToken())
+                .header("Authorization", AuthFactory.createLoginToken())
                 .when().get("/todos")
                 .then().log().all()
                 .extract()
@@ -106,8 +104,7 @@ class TodoControllerTest extends AcceptanceTest {
     private void insertTodo(TodoRequest request) {
         RestAssured
                 .given().log().all()
-                .header("Authorization", createAuthToken())
-                .header("Authorization", "Basic ")
+                .header("Authorization", AuthFactory.createLoginToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when().post("/todos")
@@ -118,7 +115,7 @@ class TodoControllerTest extends AcceptanceTest {
     private void updateStatus(Long id, TodoUpdateStatusRequest request) {
         RestAssured
                 .given().log().all()
-                .header("Authorization", createAuthToken())
+                .header("Authorization", AuthFactory.createLoginToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when().patch("/todos/" + id)
@@ -126,9 +123,11 @@ class TodoControllerTest extends AcceptanceTest {
                 .extract();
     }
 
-    private String createAuthToken() {
+    private Todo createTodoWithLoginUser(String title) {
         UserRequest request = UserFactory.createUserRequest("천재골퍼");
         insertUser(request);
-        return "Basic " + AuthFactory.tokenByUserRequest(request);
+
+        insertTodo(TodoFactory.createTodoRequest(title));
+        return todoRepository.findAll().get(0);
     }
 }

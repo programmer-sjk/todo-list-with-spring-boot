@@ -20,8 +20,8 @@ public class TodoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseMessage<TodoResponse> find(@PathVariable Long id) {
-        return ResponseMessage.ok(todoService.find(id));
+    public ResponseMessage<TodoResponse> find(@PathVariable Long id, @AuthenticationPrincipal LoginUser user) {
+        return ResponseMessage.ok(todoService.find(id, user.getId()));
     }
 
     @GetMapping()
@@ -39,8 +39,12 @@ public class TodoController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseMessage<String> updateStatus(@PathVariable Long id, @RequestBody TodoUpdateStatusRequest request) {
-        todoService.updateStatus(id, request);
+    public ResponseMessage<String> updateStatus(
+            @PathVariable Long id,
+            @AuthenticationPrincipal LoginUser user,
+            @RequestBody TodoUpdateStatusRequest request
+    ) {
+        todoService.updateStatus(id, user.getId(), request);
         return ResponseMessage.ok();
     }
 }

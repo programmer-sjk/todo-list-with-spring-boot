@@ -40,8 +40,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private boolean allowMarketing;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true )
-    private List<Todo> todos = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true )
+    private final List<Todo> todos = new ArrayList<>();
 
     protected User() {}
 
@@ -105,6 +105,10 @@ public class User extends BaseEntity {
         return allowMarketing;
     }
 
+    public List<Todo> getTodos() {
+        return todos;
+    }
+
     public static class Builder {
         private String name;
         private String nickname;
@@ -148,5 +152,4 @@ public class User extends BaseEntity {
             return new User(this);
         }
     }
-
 }

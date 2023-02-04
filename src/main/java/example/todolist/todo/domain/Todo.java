@@ -16,7 +16,7 @@ public class Todo extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TodoStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
 
     protected Todo() {}
@@ -29,6 +29,7 @@ public class Todo extends BaseEntity {
     public Todo(String title, User user) {
         this(title);
         this.user = user;
+        user.addTodo(this);
     }
 
     public void updateStatus(String status) {

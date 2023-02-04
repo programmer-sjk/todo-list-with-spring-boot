@@ -23,8 +23,8 @@ public class TodoService {
         this.userRepository = userRepository;
     }
 
-    public TodoResponse find(Long id) {
-        return new TodoResponse(findById(id));
+    public TodoResponse find(Long id, Long userId) {
+        return new TodoResponse(findById(id, userId));
     }
 
     public List<TodoResponse> findAll() {
@@ -41,13 +41,13 @@ public class TodoService {
     }
 
     @Transactional
-    public void updateStatus(Long id, TodoUpdateStatusRequest request) {
-        Todo todo = findById(id);
+    public void updateStatus(Long id, Long userId, TodoUpdateStatusRequest request) {
+        Todo todo = findById(id, userId);
         todo.updateStatus(request.getStatus());
     }
 
-    private Todo findById(Long id) {
-        return todoRepository.findById(id)
+    private Todo findById(Long id, Long userId) {
+        return todoRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new IllegalArgumentException("Todo 목록이 존재하지 않습니다."));
     }
 
