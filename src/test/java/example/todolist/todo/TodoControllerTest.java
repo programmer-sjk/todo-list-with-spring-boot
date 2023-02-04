@@ -2,11 +2,15 @@ package example.todolist.todo;
 
 import example.todolist.AcceptanceTest;
 import example.todolist.fixture.TodoFactory;
+import example.todolist.fixture.UserFactory;
 import example.todolist.todo.domain.Todo;
 import example.todolist.todo.domain.TodoStatus;
 import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
+import example.todolist.user.UserRepository;
+import example.todolist.user.dto.UserRequest;
+import example.todolist.utils.AuthFactory;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,11 +19,15 @@ import org.springframework.http.MediaType;
 
 import java.util.List;
 
+import static example.todolist.user.UserControllerTest.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TodoControllerTest extends AcceptanceTest {
     @Autowired
     private TodoRepository todoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("특정 할일을 조회할 수 있다.")
@@ -78,6 +86,7 @@ class TodoControllerTest extends AcceptanceTest {
     private TodoResponse findTodo(Long id) {
         return RestAssured
                 .given().log().all()
+                .header("Authorization", createAuthToken())
                 .when().get("/todos/" + id)
                 .then().log().all()
                 .extract()
@@ -87,6 +96,7 @@ class TodoControllerTest extends AcceptanceTest {
     private List<TodoResponse> findAllTodo() {
         return RestAssured
                 .given().log().all()
+                .header("Authorization", createAuthToken())
                 .when().get("/todos")
                 .then().log().all()
                 .extract()
@@ -96,6 +106,8 @@ class TodoControllerTest extends AcceptanceTest {
     private void insertTodo(TodoRequest request) {
         RestAssured
                 .given().log().all()
+                .header("Authorization", createAuthToken())
+                .header("Authorization", "Basic ")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when().post("/todos")
@@ -106,10 +118,17 @@ class TodoControllerTest extends AcceptanceTest {
     private void updateStatus(Long id, TodoUpdateStatusRequest request) {
         RestAssured
                 .given().log().all()
+                .header("Authorization", createAuthToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when().patch("/todos/" + id)
                 .then().log().all()
                 .extract();
+    }
+
+    private String createAuthToken() {
+        UserRequest request = UserFactory.createUserRequest("천재골퍼");
+        insertUser(request);
+        return "Basic " + AuthFactory.tokenByUserRequest(request);
     }
 }

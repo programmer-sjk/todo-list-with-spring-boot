@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UserControllerTest extends AcceptanceTest {
+public class UserControllerTest extends AcceptanceTest {
     @Autowired
     private UserRepository userRepository;
 
@@ -43,7 +43,7 @@ class UserControllerTest extends AcceptanceTest {
         assertThat(users.get(0).getDeletedAt()).isNotNull();
     }
 
-    private void insertUser(UserRequest request) {
+    public static void insertUser(UserRequest request) {
         RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
