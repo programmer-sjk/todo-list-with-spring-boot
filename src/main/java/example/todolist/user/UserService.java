@@ -1,6 +1,6 @@
 package example.todolist.user;
 
-import example.todolist.user.domain.CustomUserDetails;
+import example.todolist.user.domain.LoginUser;
 import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,6 +46,6 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             return null;
         }
-        return new CustomUserDetails(user);
+        return new LoginUser(user);
     }
 }
