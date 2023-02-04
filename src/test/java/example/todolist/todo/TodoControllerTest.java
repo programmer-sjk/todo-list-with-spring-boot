@@ -8,14 +8,15 @@ import example.todolist.todo.domain.TodoStatus;
 import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
-import example.todolist.user.UserRepository;
-import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
 import example.todolist.utils.AuthFactory;
 import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.util.List;
@@ -27,20 +28,35 @@ class TodoControllerTest extends AcceptanceTest {
     @Autowired
     private TodoRepository todoRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Test
-    @DisplayName("특정 할일을 조회할 수 있다.")
-    void find() {
+    @DisplayName("가장 최근에 작성한 Todo를 조회할 수 있다.")
+    void findRecent() {
         // given
         Todo todo = createTodoWithLoginUser("basic vs bearer");
 
         // when
-        TodoResponse response = findTodo(todo.getId());
+        TodoResponse response = findRecentTodo().jsonPath()
+                .getObject("data", TodoResponse.class);
 
         // then
         assertThat(response.getId()).isEqualTo(todo.getId());
+    }
+
+    @Test
+    @DisplayName("가장 최근에 작성한 Todo가 없다면 204(NO_CONTENT) 상태코드가 반환된다.")
+    void findRecentEmpty() {
+        // given
+        createLoginUser();
+
+        // when
+        ExtractableResponse<Response> response = findRecentTodo();
+
+        // then
+        int statusCode = response.jsonPath().getInt("statusCode");
+        String message = response.jsonPath().getString("message");
+
+        assertThat(statusCode).isEqualTo(HttpStatus.NO_CONTENT.value());
+        assertThat(message).isEqualTo(HttpStatus.NO_CONTENT.getReasonPhrase());
     }
 
     @Test
@@ -81,14 +97,13 @@ class TodoControllerTest extends AcceptanceTest {
         assertThat(updatedTodo.getStatus()).isEqualTo(TodoStatus.IN_PROGRESS);
     }
 
-    private TodoResponse findTodo(Long id) {
+    private ExtractableResponse<Response> findRecentTodo() {
         return RestAssured
                 .given().log().all()
                 .header("Authorization", AuthFactory.createLoginToken())
-                .when().get("/todos/" + id)
+                .when().get("/todos/recent")
                 .then().log().all()
-                .extract()
-                .jsonPath().getObject("data", TodoResponse.class);
+                .extract();
     }
 
     private List<TodoResponse> findAllTodo() {
@@ -124,10 +139,13 @@ class TodoControllerTest extends AcceptanceTest {
     }
 
     private Todo createTodoWithLoginUser(String title) {
-        UserRequest request = UserFactory.createUserRequest("천재골퍼");
-        insertUser(request);
-
+        createLoginUser();
         insertTodo(TodoFactory.createTodoRequest(title));
         return todoRepository.findAll().get(0);
+    }
+
+    private void createLoginUser() {
+        UserRequest request = UserFactory.createUserRequest("천재골퍼");
+        insertUser(request);
     }
 }

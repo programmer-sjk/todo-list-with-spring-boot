@@ -40,18 +40,33 @@ class TodoServiceTest {
     }
 
     @Test
-    @DisplayName("특정 할일을 조회할 수 있다.")
-    void find() {
+    @DisplayName("가장 최근에 작성한 Todo를 조회할 수 있다.")
+    void findRecent() {
         // given
         User user = userRepository.save(UserFactory.create("골프 하수"));
-        Todo todo = todoRepository.save(TodoFactory.createWithUser("kafka 공부", user));
+        todoRepository.save(TodoFactory.createWithUser("kafka 공부 1장", user));
+        todoRepository.save(TodoFactory.createWithUser("kafka 공부 2장", user));
+        Todo recentTodo = todoRepository.save(TodoFactory.createWithUser("kafka 공부 3장", user));
+
+        // when
+        TodoResponse response = todoService.findRecent(user.getId()).get();
+
+        // then
+        assertThat(response.getId()).isEqualTo(recentTodo.getId());
+        assertThat(response.getTitle()).isEqualTo(recentTodo.getTitle());
+    }
+
+    @Test
+    @DisplayName("가장 최근에 작성한 Todo가 없다면 Optional이 반환된다.")
+    void findRecentEmpty() {
+        // given
+        User user = userRepository.save(UserFactory.create("골프 하수"));
 
         // when
         Optional<TodoResponse> response = todoService.findRecent(user.getId());
 
         // then
-        assertThat(response.get().getId()).isEqualTo(todo.getId());
-        assertThat(response.get().getTitle()).isEqualTo(todo.getTitle());
+        assertThat(response).isEmpty();
     }
 
     @Test
