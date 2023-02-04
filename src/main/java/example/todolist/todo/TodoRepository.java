@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     Optional<Todo> findByIdAndUserId(Long id, Long userId);
+    Optional<Todo> findTop1ByUserIdOrderByIdDesc(Long userId);
 }

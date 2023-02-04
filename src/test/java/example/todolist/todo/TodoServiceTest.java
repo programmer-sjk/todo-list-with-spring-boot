@@ -8,17 +8,15 @@ import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
 import example.todolist.user.UserRepository;
-import example.todolist.user.UserService;
 import example.todolist.user.domain.User;
-import example.todolist.user.dto.UserRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -49,11 +47,11 @@ class TodoServiceTest {
         Todo todo = todoRepository.save(TodoFactory.createWithUser("kafka 공부", user));
 
         // when
-        TodoResponse response = todoService.find(todo.getId(), user.getId());
+        Optional<TodoResponse> response = todoService.findRecent(user.getId());
 
         // then
-        assertThat(response.getId()).isEqualTo(todo.getId());
-        assertThat(response.getTitle()).isEqualTo(todo.getTitle());
+        assertThat(response.get().getId()).isEqualTo(todo.getId());
+        assertThat(response.get().getTitle()).isEqualTo(todo.getTitle());
     }
 
     @Test

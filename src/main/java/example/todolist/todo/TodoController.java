@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/todos")
@@ -19,9 +20,10 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseMessage<TodoResponse> find(@PathVariable Long id, @AuthenticationPrincipal LoginUser user) {
-        return ResponseMessage.ok(todoService.find(id, user.getId()));
+    @GetMapping("/recent")
+    public ResponseMessage<?> findRecent(@AuthenticationPrincipal LoginUser user) {
+        Optional<TodoResponse> todo = todoService.findRecent(user.getId());
+        return todo.isPresent() ? ResponseMessage.ok(todo.get()) : ResponseMessage.noContent();
     }
 
     @GetMapping()
