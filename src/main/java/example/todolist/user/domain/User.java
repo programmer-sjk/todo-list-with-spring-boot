@@ -63,6 +63,12 @@ public class User extends BaseEntity {
         this.deletedAt = deletedAt;
     }
 
+    public void addTodo(Todo todo) {
+        if (!this.todos.contains(todo)) {
+            this.todos.add(todo);
+        }
+    }
+
     public Long getId() {
         return id;
     }

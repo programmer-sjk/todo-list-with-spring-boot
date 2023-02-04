@@ -26,6 +26,11 @@ public class Todo extends BaseEntity {
         this.status = TodoStatus.TODO;
     }
 
+    public Todo(String title, User user) {
+        this(title);
+        this.user = user;
+    }
+
     public void updateStatus(String status) {
         this.status = TodoStatus.valueOf(status);
     }

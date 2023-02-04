@@ -4,6 +4,8 @@ import example.todolist.common.ResponseMessage;
 import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
+import example.todolist.user.domain.LoginUser;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,8 +30,11 @@ public class TodoController {
     }
 
     @PostMapping()
-    public ResponseMessage<String> insertTodo(@RequestBody TodoRequest request) {
-        todoService.insertTodo(request);
+    public ResponseMessage<String> insertTodo(
+            @AuthenticationPrincipal LoginUser user,
+            @RequestBody TodoRequest request
+    ) {
+        todoService.insertTodo(user.getId(), request);
         return ResponseMessage.ok();
     }
 

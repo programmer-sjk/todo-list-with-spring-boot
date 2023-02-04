@@ -1,6 +1,7 @@
 package example.todolist.todo.dto;
 
 import example.todolist.todo.domain.Todo;
+import example.todolist.user.domain.User;
 import jakarta.validation.constraints.NotBlank;
 
 public class TodoRequest {
@@ -13,8 +14,8 @@ public class TodoRequest {
         this.title = title;
     }
 
-    public Todo toEntity() {
-        return new Todo(title);
+    public Todo toEntity(User user) {
+        return new Todo(title, user);
     }
 
     public String getTitle() {

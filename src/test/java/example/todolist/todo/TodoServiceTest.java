@@ -32,9 +32,13 @@ class TodoServiceTest {
     @Autowired
     private TodoRepository todoRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeEach
     void setUp() {
         this.todoRepository.deleteAll();
+        this.userRepository.deleteAll();
     }
 
     @Test
@@ -71,10 +75,11 @@ class TodoServiceTest {
     @DisplayName("할일을 등록할 수 있다.")
     void insert() {
         // given
+        User user = userRepository.save(UserFactory.create("골프 하수"));
         TodoRequest request = TodoFactory.createTodoRequest("스프링 로그인 공부");
 
         // when
-        todoService.insertTodo(request);
+        todoService.insertTodo(user.getId(), request);
 
         // then
         Todo result = todoRepository.findAll().get(0);

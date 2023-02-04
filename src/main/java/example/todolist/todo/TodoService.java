@@ -4,6 +4,8 @@ import example.todolist.todo.domain.Todo;
 import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
+import example.todolist.user.UserRepository;
+import example.todolist.user.domain.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class TodoService {
     private final TodoRepository todoRepository;
+    private final UserRepository userRepository;
 
-    public TodoService(TodoRepository todoRepository) {
+    public TodoService(TodoRepository todoRepository, UserRepository userRepository) {
         this.todoRepository = todoRepository;
+        this.userRepository = userRepository;
     }
 
     public TodoResponse find(Long id) {
@@ -31,8 +35,9 @@ public class TodoService {
     }
 
     @Transactional
-    public void insertTodo(TodoRequest request) {
-        todoRepository.save(request.toEntity());
+    public void insertTodo(Long userId, TodoRequest request) {
+        User user = findOwner(userId);
+        todoRepository.save(request.toEntity(user));
     }
 
     @Transactional
@@ -44,5 +49,10 @@ public class TodoService {
     private Todo findById(Long id) {
         return todoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Todo 목록이 존재하지 않습니다."));
+    }
+
+    private User findOwner(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User가 존재하지 않습니다."));
     }
 }
