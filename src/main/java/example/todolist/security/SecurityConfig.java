@@ -12,12 +12,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    public static final String[] ACCESS_ALLOW_APIS = {"/", "/users/**"};
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
                         .shouldFilterAllDispatcherTypes(false)
-                        .requestMatchers("/", "/users/**")
+                        .requestMatchers(ACCESS_ALLOW_APIS)
                         .permitAll()
                         .anyRequest()
                         .authenticated()
