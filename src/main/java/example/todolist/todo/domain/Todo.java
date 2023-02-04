@@ -28,12 +28,16 @@ public class Todo extends BaseEntity {
 
     public Todo(String title, User user) {
         this(title);
-        this.user = user;
-        user.addTodo(this);
+        setUser(user);
     }
 
     public void updateStatus(String status) {
         this.status = TodoStatus.valueOf(status);
+    }
+
+    private void setUser(User user) {
+        this.user = user;
+        user.addTodo(this);
     }
 
     public Long getId() {
@@ -46,5 +50,9 @@ public class Todo extends BaseEntity {
 
     public TodoStatus getStatus() {
         return status;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
