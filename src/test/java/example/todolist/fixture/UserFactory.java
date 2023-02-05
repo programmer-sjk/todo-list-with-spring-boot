@@ -4,16 +4,16 @@ import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
 
 public class UserFactory {
-    public static String COMMON_EMAIL = "test@gamil.com";
+    public static String COMMON_PHONE = "0104893229";
     public static String COMMON_PASSWORD = "password";
 
     public static User create(String nickname) {
         return new User.Builder()
                 .name("서정국")
                 .nickname(nickname)
-                .email(COMMON_EMAIL)
+                .email("test@gamil.com")
                 .password(COMMON_PASSWORD)
-                .phone("01048932229")
+                .phone(COMMON_PHONE)
                 .role("NORMAL")
                 .allowMarketing(true)
                 .build();
@@ -23,9 +23,9 @@ public class UserFactory {
         return new UserRequest.Builder()
                 .name("서정국")
                 .nickname(nickname)
-                .email(COMMON_EMAIL)
+                .email("test@gamil.com")
                 .password(COMMON_PASSWORD)
-                .phone("01048932229")
+                .phone(COMMON_PHONE)
                 .role("NORMAL")
                 .allowMarketing(true)
                 .build();
