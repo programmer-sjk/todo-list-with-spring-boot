@@ -73,11 +73,12 @@ class TodoServiceTest {
     @DisplayName("전체 할일을 조회할 수 있다.")
     void findAll() {
         // given
-        Todo todo1 = todoRepository.save(TodoFactory.create("스프링 세션과 Redis"));
-        Todo todo2 = todoRepository.save(TodoFactory.create("Elastic Search"));
+        User user = userRepository.save(UserFactory.create("골프 하수"));
+        Todo todo1 = todoRepository.save(TodoFactory.createWithUser("스프링 세션과 Redis", user));
+        Todo todo2 = todoRepository.save(TodoFactory.createWithUser("Elastic Search", user));
 
         // when
-        List<TodoResponse> responses = todoService.findAll();
+        List<TodoResponse> responses = todoService.findAll(user.getId());
 
         // then
         assertThat(responses).hasSize(2);

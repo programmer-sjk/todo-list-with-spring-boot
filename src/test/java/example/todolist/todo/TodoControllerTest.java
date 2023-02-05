@@ -60,7 +60,7 @@ class TodoControllerTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("전체 할일을 조회할 수 있다.")
+    @DisplayName("멤버의 전체 할일을 조회할 수 있다.")
     void findAll() {
         // given
         Todo todo = createTodoWithLoginUser("dto 역할과 범위 공부");

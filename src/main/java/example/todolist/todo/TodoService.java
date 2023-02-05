@@ -29,8 +29,8 @@ public class TodoService {
                 .map(TodoResponse::new);
     }
 
-    public List<TodoResponse> findAll() {
-        return todoRepository.findAll()
+    public List<TodoResponse> findAll(Long userId) {
+        return todoRepository.findAllByUserId(userId)
                 .stream()
                 .map(TodoResponse::new)
                 .collect(Collectors.toList());

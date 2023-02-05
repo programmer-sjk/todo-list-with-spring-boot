@@ -27,8 +27,8 @@ public class TodoController {
     }
 
     @GetMapping()
-    public ResponseMessage<List<TodoResponse>> findAll() {
-        return ResponseMessage.ok(todoService.findAll());
+    public ResponseMessage<List<TodoResponse>> findAll(@AuthenticationPrincipal LoginUser user) {
+        return ResponseMessage.ok(todoService.findAll(user.getId()));
     }
 
     @PostMapping()
