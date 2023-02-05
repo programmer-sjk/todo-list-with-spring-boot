@@ -19,6 +19,10 @@ public class ResponseMessage<T> {
         return new ResponseMessage<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(), "");
     }
 
+    public static ResponseMessage<String> badRequest(String message) {
+        return new ResponseMessage<>(HttpStatus.BAD_REQUEST.value(), message, "");
+    }
+
     private ResponseMessage(T data) {
         this.data = data;
     }
