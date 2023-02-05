@@ -48,7 +48,7 @@ public class UserControllerTest extends AcceptanceTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
-                .when().post("/users")
+                .when().post("/api/users")
                 .then().log().all()
                 .extract();
     }
@@ -56,7 +56,7 @@ public class UserControllerTest extends AcceptanceTest {
     private void withDrawUser(Long id) {
         RestAssured
                 .given().log().all()
-                .when().delete("/users/" + id)
+                .when().delete("/api/users/" + id)
                 .then().log().all()
                 .extract();
     }

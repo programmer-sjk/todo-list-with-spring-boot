@@ -101,7 +101,7 @@ class TodoControllerTest extends AcceptanceTest {
         return RestAssured
                 .given().log().all()
                 .header("Authorization", AuthFactory.createLoginToken())
-                .when().get("/todos/recent")
+                .when().get("/api/todos/recent")
                 .then().log().all()
                 .extract();
     }
@@ -110,7 +110,7 @@ class TodoControllerTest extends AcceptanceTest {
         return RestAssured
                 .given().log().all()
                 .header("Authorization", AuthFactory.createLoginToken())
-                .when().get("/todos")
+                .when().get("/api/todos")
                 .then().log().all()
                 .extract()
                 .jsonPath().getList("data", TodoResponse.class);
@@ -122,7 +122,7 @@ class TodoControllerTest extends AcceptanceTest {
                 .header("Authorization", AuthFactory.createLoginToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
-                .when().post("/todos")
+                .when().post("/api/todos")
                 .then().log().all()
                 .extract();
     }
@@ -133,7 +133,7 @@ class TodoControllerTest extends AcceptanceTest {
                 .header("Authorization", AuthFactory.createLoginToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
-                .when().patch("/todos/" + id)
+                .when().patch("/api/todos/" + id)
                 .then().log().all()
                 .extract();
     }

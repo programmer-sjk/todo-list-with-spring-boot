@@ -14,7 +14,7 @@ class HealthTest extends AcceptanceTest {
 		// when
 		JsonPath response = RestAssured
 				.given().log().all()
-				.when().get("/health")
+				.when().get("/api/health")
 				.then().log().all()
 				.extract()
 				.jsonPath();
