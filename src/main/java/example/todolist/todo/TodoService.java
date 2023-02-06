@@ -38,7 +38,12 @@ public class TodoService {
                 .map(TodoResponse::new)
                 .collect(Collectors.toList());
 
-        return new PageResponse<>(todos.getTotalPages(), todos.getTotalElements(), todos.getSize(), responses);
+        return new PageResponse.Builder<List<TodoResponse>>()
+                .totalPages(todos.getTotalPages())
+                .totalElements(todos.getTotalElements())
+                .paginationSize(todos.getSize())
+                .data(responses)
+                .build();
     }
 
     @Transactional

@@ -3,15 +3,17 @@ package example.todolist.common;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PageResponse<T> extends ResponseMessage<T> {
-    private final int totalPages;
-    private final Long totalElements;
-    private final int paginationSize;
+    private int totalPages;
+    private Long totalElements;
+    private int paginationSize;
 
-    public PageResponse(int totalPages, Long totalElements, int paginationSize, T data) {
-        super(data);
-        this.totalPages = totalPages;
-        this.totalElements = totalElements;
-        this.paginationSize = paginationSize;
+    protected PageResponse() {}
+
+    private PageResponse(Builder<T> builder) {
+        super(builder.data);
+        this.totalPages = builder.totalPages;
+        this.totalElements = builder.totalElements;
+        this.paginationSize = builder.paginationSize;
     }
 
     @JsonProperty(value = "isPaged")
@@ -29,5 +31,36 @@ public class PageResponse<T> extends ResponseMessage<T> {
 
     public int getPaginationSize() {
         return paginationSize;
+    }
+
+    public static class Builder<T> {
+        private int totalPages;
+        private Long totalElements;
+        private int paginationSize;
+        private T data;
+
+        public Builder<T> totalPages(int totalPages) {
+            this.totalPages = totalPages;
+            return this;
+        }
+
+        public Builder<T> totalElements(Long totalElements) {
+            this.totalElements = totalElements;
+            return this;
+        }
+
+        public Builder<T> paginationSize(int paginationSize) {
+            this.paginationSize = paginationSize;
+            return this;
+        }
+
+        public Builder <T> data(T data) {
+            this.data = data;
+            return this;
+        }
+
+        public PageResponse<T> build() {
+            return new PageResponse<>(this);
+        }
     }
 }

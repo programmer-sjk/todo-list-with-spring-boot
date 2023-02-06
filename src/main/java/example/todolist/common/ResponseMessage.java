@@ -33,7 +33,7 @@ public class ResponseMessage<T> {
         this.data = data;
     }
 
-    private ResponseMessage() {}
+    protected ResponseMessage() {}
 
     public int getStatusCode() {
         return statusCode;
