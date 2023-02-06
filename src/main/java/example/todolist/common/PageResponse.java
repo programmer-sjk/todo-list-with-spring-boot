@@ -1,5 +1,7 @@
 package example.todolist.common;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PageResponse<T> extends ResponseMessage<T> {
     private final int totalPages;
     private final Long totalElements;
@@ -10,6 +12,11 @@ public class PageResponse<T> extends ResponseMessage<T> {
         this.totalPages = totalPages;
         this.totalElements = totalElements;
         this.paginationSize = paginationSize;
+    }
+
+    @JsonProperty(value = "isPaged")
+    public boolean isPaged() {
+        return true;
     }
 
     public int getTotalPages() {

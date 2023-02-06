@@ -95,6 +95,7 @@ class TodoServiceTest {
         // given
         int allTodoCount = 6;
         int pagingCount = 5;
+
         User user = userRepository.save(UserFactory.create("골프 하수"));
         for (int i = 0; i < allTodoCount; i++) {
             todoRepository.save(TodoFactory.createWithUser("스프링 세션, part:" + i, user));
@@ -106,6 +107,7 @@ class TodoServiceTest {
         );
 
         // then
+        assertThat(responses.isPaged()).isTrue();
         assertThat(responses.getData()).hasSize(pagingCount);
         assertThat(responses.getTotalElements()).isEqualTo(allTodoCount);
         assertThat(responses.getTotalPages()).isEqualTo(2);
