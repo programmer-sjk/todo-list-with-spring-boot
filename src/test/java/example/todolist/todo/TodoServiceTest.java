@@ -1,5 +1,6 @@
 package example.todolist.todo;
 
+import example.todolist.common.PageResponse;
 import example.todolist.fixture.TodoFactory;
 import example.todolist.fixture.UserFactory;
 import example.todolist.todo.domain.Todo;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +59,7 @@ class TodoServiceTest {
     }
 
     @Test
-    @DisplayName("가장 최근에 작성한 Todo가 없다면 Optional이 반환된다.")
+    @DisplayName("가장 최근에 작성한 Todo가 없다면 빈 Optional이 반환된다.")
     void findRecentEmpty() {
         // given
         User user = userRepository.save(UserFactory.create("골프 하수"));
@@ -78,12 +80,35 @@ class TodoServiceTest {
         Todo todo2 = todoRepository.save(TodoFactory.createWithUser("Elastic Search", user));
 
         // when
-        List<TodoResponse> responses = todoService.findAll(user.getId());
+        PageResponse<List<TodoResponse>> responses = todoService.findAll(user.getId(), PageRequest.of(0, 20));
 
         // then
-        assertThat(responses).hasSize(2);
-        assertThat(responses.get(0).getId()).isEqualTo(todo1.getId());
-        assertThat(responses.get(1).getId()).isEqualTo(todo2.getId());
+        List<TodoResponse> results = responses.getData();
+        assertThat(results).hasSize(2);
+        assertThat(results.get(0).getId()).isEqualTo(todo1.getId());
+        assertThat(results.get(1).getId()).isEqualTo(todo2.getId());
+    }
+
+    @Test
+    @DisplayName("전체 할일 조회는 페이징된다.")
+    void findAllPaging() {
+        // given
+        int allTodoCount = 6;
+        int pagingCount = 5;
+        User user = userRepository.save(UserFactory.create("골프 하수"));
+        for (int i = 0; i < allTodoCount; i++) {
+            todoRepository.save(TodoFactory.createWithUser("스프링 세션, part:" + i, user));
+        }
+
+        // when
+        PageResponse<List<TodoResponse>> responses = todoService.findAll(
+                user.getId(), PageRequest.of(0, pagingCount)
+        );
+
+        // then
+        assertThat(responses.getData()).hasSize(pagingCount);
+        assertThat(responses.getTotalElements()).isEqualTo(allTodoCount);
+        assertThat(responses.getTotalPages()).isEqualTo(2);
     }
 
     @Test
