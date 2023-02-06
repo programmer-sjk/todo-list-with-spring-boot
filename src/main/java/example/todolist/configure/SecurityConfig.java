@@ -34,8 +34,9 @@ public class SecurityConfig {
                 .csrf().disable()
                 .httpBasic(withDefaults())
                 .exceptionHandling()
-                .authenticationEntryPoint(authEntryPoint)
-                .and().build();
+                    .authenticationEntryPoint(authEntryPoint)
+                    .and()
+                .build();
     }
 
     @Bean
