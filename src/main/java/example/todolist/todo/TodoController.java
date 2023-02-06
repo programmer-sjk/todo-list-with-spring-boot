@@ -6,6 +6,7 @@ import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
 import example.todolist.user.domain.LoginUser;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class TodoController {
     @PostMapping()
     public ResponseMessage<String> insertTodo(
             @AuthenticationPrincipal LoginUser user,
-            @RequestBody TodoRequest request
+            @RequestBody @Valid TodoRequest request
     ) {
         todoService.insertTodo(user.getId(), request);
         return ResponseMessage.ok();
@@ -46,7 +47,7 @@ public class TodoController {
     public ResponseMessage<String> updateStatus(
             @PathVariable Long id,
             @AuthenticationPrincipal LoginUser user,
-            @RequestBody TodoUpdateStatusRequest request
+            @RequestBody @Valid TodoUpdateStatusRequest request
     ) {
         todoService.updateStatus(id, user.getId(), request);
         return ResponseMessage.ok();
