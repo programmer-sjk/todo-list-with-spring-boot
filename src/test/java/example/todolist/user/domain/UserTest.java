@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserTest {
@@ -21,5 +22,18 @@ class UserTest {
 
         // then
         assertEquals(user.getDeletedAt(), now);
+    }
+
+    @Test
+    @DisplayName("이미 탈퇴한 회원은 탈퇴할 수 없다.")
+    void alreadyWithDraw() {
+        // given
+        User user = UserFactory.create("천재골퍼");
+        user.withDraw(LocalDateTime.now());
+
+        // when & then
+        assertThatThrownBy(() -> user.withDraw(LocalDateTime.now()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("이미 탈퇴한 회원입니다.");
     }
 }

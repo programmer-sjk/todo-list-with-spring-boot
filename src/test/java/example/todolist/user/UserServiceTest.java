@@ -65,4 +65,18 @@ class UserServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("회원이 존재하지 않습니다.");
     }
+
+    @Test
+    @DisplayName("이미 탈퇴한 회원은 탈퇴할 수 없다.")
+    void alreadyWithDraw() {
+        // given
+        User user = userRepository.save(UserFactory.create("천재 골퍼"));
+        LocalDateTime now = LocalDateTime.of(2023, 2, 3, 12, 18, 0, 0);
+        userService.withDraw(user.getId(), now);
+
+        // when & then
+        assertThatThrownBy(() -> userService.withDraw(user.getId(), now))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("이미 탈퇴한 회원입니다.");
+    }
 }
