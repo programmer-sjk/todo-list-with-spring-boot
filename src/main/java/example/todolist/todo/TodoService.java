@@ -1,11 +1,14 @@
 package example.todolist.todo;
 
+import example.todolist.common.PageResponse;
 import example.todolist.todo.domain.Todo;
 import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
 import example.todolist.user.UserRepository;
 import example.todolist.user.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +32,13 @@ public class TodoService {
                 .map(TodoResponse::new);
     }
 
-    public List<TodoResponse> findAll(Long userId) {
-        return todoRepository.findAllByUserId(userId)
-                .stream()
+    public PageResponse<List<TodoResponse>> findAll(Long userId, Pageable pageable) {
+        Page<Todo> todos = todoRepository.findAllByUserId(userId, pageable);
+        List<TodoResponse> responses = todos.stream()
                 .map(TodoResponse::new)
                 .collect(Collectors.toList());
+
+        return new PageResponse<>(todos.getTotalPages(), todos.getTotalElements(), todos.getSize(), responses);
     }
 
     @Transactional

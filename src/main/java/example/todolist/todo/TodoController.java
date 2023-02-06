@@ -1,10 +1,12 @@
 package example.todolist.todo;
 
+import example.todolist.common.PageResponse;
 import example.todolist.common.ResponseMessage;
 import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
 import example.todolist.user.domain.LoginUser;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +29,8 @@ public class TodoController {
     }
 
     @GetMapping()
-    public ResponseMessage<List<TodoResponse>> findAll(@AuthenticationPrincipal LoginUser user) {
-        return ResponseMessage.ok(todoService.findAll(user.getId()));
+    public PageResponse<List<TodoResponse>> findAll(@AuthenticationPrincipal LoginUser user, Pageable pageable) {
+        return todoService.findAll(user.getId(), pageable);
     }
 
     @PostMapping()
