@@ -23,7 +23,7 @@ public class ResponseMessage<T> {
         return new ResponseMessage<>(HttpStatus.BAD_REQUEST.value(), message, "");
     }
 
-    private ResponseMessage(T data) {
+    protected ResponseMessage(T data) {
         this.data = data;
     }
 
