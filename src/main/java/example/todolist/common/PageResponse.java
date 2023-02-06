@@ -7,7 +7,7 @@ public class PageResponse<T> extends ResponseMessage<T> {
     private Long totalElements;
     private int paginationSize;
 
-    protected PageResponse() {}
+    private PageResponse() {}
 
     private PageResponse(Builder<T> builder) {
         super(builder.data);
