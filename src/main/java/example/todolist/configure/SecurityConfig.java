@@ -8,22 +8,25 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private static final String[] ACCESS_ALLOW_APIS = {"/", "/health", "/users/**"};
-    private final AuthenticationEntryPoint authEntryPoint;
+    private static final String[] ACCESS_ALLOW_APIS = {"/", "/health", "/login", "/users/**"};
+    private final JwtAuthenticationEntryPoint authEntryPoint;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    public SecurityConfig(@Qualifier("restAuthenticationEntryPoint") AuthenticationEntryPoint authEntryPoint) {
+    public SecurityConfig(JwtAuthenticationEntryPoint authEntryPoint, JwtRequestFilter jwtRequestFilter) {
         this.authEntryPoint = authEntryPoint;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
+        http
                 .authorizeHttpRequests(authorize -> authorize
                         .shouldFilterAllDispatcherTypes(false)
                         .requestMatchers(ACCESS_ALLOW_APIS)
@@ -32,15 +35,10 @@ public class SecurityConfig {
                         .authenticated()
                 )
                 .csrf().disable()
-                .httpBasic(withDefaults())
                 .exceptionHandling()
-                    .authenticationEntryPoint(authEntryPoint)
-                    .and()
-                .build();
-    }
+                    .authenticationEntryPoint(authEntryPoint);
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 }

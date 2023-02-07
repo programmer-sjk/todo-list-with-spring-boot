@@ -18,6 +18,10 @@ public class LoginUser implements UserDetails {
         return user.getId();
     }
 
+    public String getPhone() {
+        return user.getPhone();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()));

@@ -1,5 +1,6 @@
 package example.todolist.user;
 
+import example.todolist.configure.PasswordEncoder;
 import example.todolist.user.domain.LoginUser;
 import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
@@ -15,16 +16,14 @@ import java.time.LocalDateTime;
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public void insertUser(UserRequest request) {
-        String password = passwordEncoder.encode(request.getPassword());
+        String password = PasswordEncoder.encode(request.getPassword());
         userRepository.save(request.toEntity(password));
     }
 
@@ -41,6 +40,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String phone) {
+        System.out.println("loadUserByUsername");
         User user = userRepository.findByPhone(phone);
 
         if (user == null) {
