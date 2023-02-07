@@ -37,7 +37,7 @@ public class LoginControllerTest extends AcceptanceTest {
         assertThat(response.getAccessToken()).isNotEmpty();
     }
 
-    public static LoginResponse login(LoginRequest request) {
+    private static LoginResponse login(LoginRequest request) {
         return RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -46,5 +46,9 @@ public class LoginControllerTest extends AcceptanceTest {
                 .then().log().all()
                 .extract()
                 .jsonPath().getObject("data", LoginResponse.class);
+    }
+
+    public static String getLoginToken(LoginRequest request) {
+        return login(request).getAccessToken();
     }
 }
