@@ -43,9 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         String token = header.split(" ")[1].trim();
-        try {
-            jwtTokenUtil.validateToken(token);
-        } catch (JwtException e) {
+        if (!jwtTokenUtil.validateToken(token)) {
             filterChain.doFilter(request, response);
             return;
         }

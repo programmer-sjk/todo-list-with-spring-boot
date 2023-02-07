@@ -1,6 +1,7 @@
 package example.todolist.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -31,15 +32,6 @@ public class JwtTokenUtil {
                 .getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
-
-    public Date getExpirationDateFromToken(String token) {
-        return getAllClaimsFromToken(token).getExpiration();
-    }
-
     public String generateToken(String phone) {
         long currentMillis = System.currentTimeMillis();
         return Jwts.builder()
@@ -50,10 +42,15 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    public void validateToken(String token) {
-        Jwts.parserBuilder()
-                .setSigningKey(SECRET.getBytes(StandardCharsets.UTF_8))
-                .build()
-                .parseClaimsJws(token);
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(SECRET.getBytes(StandardCharsets.UTF_8))
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
     }
 }
