@@ -40,12 +40,9 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String phone) {
-        System.out.println("loadUserByUsername");
-        User user = userRepository.findByPhone(phone);
+        User user = userRepository.findByPhone(phone)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 멤버가 존재하지 않습니다."));
 
-        if (user == null) {
-            return null;
-        }
         return new LoginUser(user);
     }
 }
