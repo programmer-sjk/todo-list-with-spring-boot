@@ -28,6 +28,8 @@ public class SecurityConfig {
                             .permitAll()
                         .requestMatchers(HttpMethod.POST, "/users")
                             .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users")
+                            .hasRole("ADMIN")
                         .anyRequest()
                             .authenticated()
                 )
