@@ -4,6 +4,7 @@ import example.todolist.AcceptanceTest;
 import example.todolist.fixture.UserFactory;
 import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
+import example.todolist.utils.AuthFactory;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,8 @@ public class UserControllerTest extends AcceptanceTest {
     private void withDrawUser(Long id) {
         RestAssured
                 .given().log().all()
+                .header("Authorization", AuthFactory.createLoginToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().delete("/api/users/" + id)
                 .then().log().all()
                 .extract();

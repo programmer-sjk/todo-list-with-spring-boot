@@ -47,12 +47,4 @@ public class LoginControllerTest extends AcceptanceTest {
                 .extract()
                 .jsonPath().getObject("data", LoginResponse.class);
     }
-
-    private void withDrawUser(Long id) {
-        RestAssured
-                .given().log().all()
-                .when().delete("/api/users/" + id)
-                .then().log().all()
-                .extract();
-    }
 }
