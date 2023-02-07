@@ -6,6 +6,7 @@ import example.todolist.fixture.LoginFactory;
 import example.todolist.fixture.UserFactory;
 import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
+import example.todolist.user.dto.UserResponse;
 import example.todolist.utils.AuthFactory;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -24,6 +25,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserControllerTest extends AcceptanceTest {
     @Autowired
     private UserRepository userRepository;
+
+    @Test
+    @DisplayName("ADMIN 권한은 전체 유저를 조회할 수 있다.")
+    void findAll() {
+        // given
+        userRepository.save(UserFactory.createAdmin("관리자"));
+        String token = getLoginToken(LoginFactory.createLoginRequest());
+
+        // when
+        List<UserResponse> responses = findAll(token)
+                .jsonPath()
+                .getList("data", UserResponse.class);
+
+        // then
+        assertThat(responses).hasSize(1);
+        assertThat(responses.get(0).getNickname()).isEqualTo("관리자");
+    }
+
+    @Test
+    @DisplayName("일반 USER 권한은 전체 유저를 조회할 수 없다.")
+    void userAuthorityFindAllFail() {
+        // given
+        userRepository.save(UserFactory.create("지나가던 행인"));
+        String token = getLoginToken(LoginFactory.createLoginRequest());
+
+        // when
+        ResponseMessage<String> response = findAll(token).as(ResponseMessage.class);
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+        assertThat(response.getMessage()).isEqualTo("Full authentication is required to access this resource");
+    }
 
     @Test
     @DisplayName("회원을 등록할 수 있다.")
@@ -61,6 +94,16 @@ public class UserControllerTest extends AcceptanceTest {
 
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    private ExtractableResponse<Response> findAll(String token) {
+        return RestAssured
+                .given().log().all()
+                .header("Authorization", AuthFactory.createLoginToken(token))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/api/users")
+                .then().log().all()
+                .extract();
     }
 
     public static void insertUser(UserRequest request) {

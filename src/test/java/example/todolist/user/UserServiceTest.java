@@ -3,6 +3,7 @@ package example.todolist.user;
 import example.todolist.fixture.UserFactory;
 import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
+import example.todolist.user.dto.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,6 +28,20 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         this.userRepository.deleteAll();
+    }
+
+    @Test
+    @DisplayName("전체 회원을 조회할 수 있다.")
+    void findAll() {
+        // given
+        User user = userRepository.save(UserFactory.create("천재"));
+
+        // when
+        List<UserResponse> responses = userService.findAll();
+
+        // then
+        assertThat(responses).hasSize(1);
+        assertThat(responses.get(0).getNickname()).isEqualTo("천재");
     }
 
     @Test

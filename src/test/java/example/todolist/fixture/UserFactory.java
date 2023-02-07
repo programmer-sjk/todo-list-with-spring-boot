@@ -1,6 +1,7 @@
 package example.todolist.fixture;
 
 import example.todolist.user.domain.User;
+import example.todolist.user.domain.UserRole;
 import example.todolist.user.dto.UserRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -15,7 +16,19 @@ public class UserFactory {
                 .email("test@gamil.com")
                 .password(new BCryptPasswordEncoder().encode(COMMON_PASSWORD))
                 .phone(COMMON_PHONE)
-                .role("NORMAL")
+                .role(UserRole.ROLE_USER.name())
+                .allowMarketing(true)
+                .build();
+    }
+
+    public static User createAdmin(String nickname) {
+        return new User.Builder()
+                .name("서정국")
+                .nickname(nickname)
+                .email("test@gamil.com")
+                .password(new BCryptPasswordEncoder().encode(COMMON_PASSWORD))
+                .phone(COMMON_PHONE)
+                .role(UserRole.ROLE_ADMIN.name())
                 .allowMarketing(true)
                 .build();
     }
@@ -27,7 +40,7 @@ public class UserFactory {
                 .email("test@gamil.com")
                 .password(COMMON_PASSWORD)
                 .phone(COMMON_PHONE)
-                .role("NORMAL")
+                .role(UserRole.ROLE_USER.name())
                 .allowMarketing(true)
                 .build();
     }
