@@ -4,6 +4,7 @@ import example.todolist.configure.PasswordEncoder;
 import example.todolist.user.domain.LoginUser;
 import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
+import example.todolist.user.dto.UserResponse;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @Service
@@ -19,6 +22,13 @@ public class UserService implements UserDetailsService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public List<UserResponse> findAll() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional

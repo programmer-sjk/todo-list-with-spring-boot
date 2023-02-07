@@ -4,7 +4,6 @@ import example.todolist.AcceptanceTest;
 import example.todolist.common.ResponseMessage;
 import example.todolist.fixture.LoginFactory;
 import example.todolist.fixture.UserFactory;
-import example.todolist.login.dto.LoginResponse;
 import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
 import example.todolist.utils.AuthFactory;
