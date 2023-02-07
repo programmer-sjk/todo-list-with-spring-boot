@@ -23,6 +23,10 @@ public class ResponseMessage<T> {
         return new ResponseMessage<>(HttpStatus.BAD_REQUEST.value(), message, "");
     }
 
+    public static ResponseMessage<String> unauthorized(String message) {
+        return new ResponseMessage<>(HttpStatus.UNAUTHORIZED.value(), message, "");
+    }
+
     protected ResponseMessage(T data) {
         this.data = data;
     }
