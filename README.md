@@ -139,7 +139,7 @@ src
 ```
 
 ## 테스트 결과
-![img.png](images/test.png)
+![img.png](images/test.PNG)
 
 ## 설계시 고려한 것들
 - 정상적인 응답과 예외 발생 시, 공통적인 format 으로 응답하길 원했습니다.
