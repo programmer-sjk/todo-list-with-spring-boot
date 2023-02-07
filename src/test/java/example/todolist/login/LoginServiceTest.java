@@ -42,7 +42,7 @@ class LoginServiceTest {
     }
 
     @Test
-    @DisplayName("멤버가 존재하지 않으면 예외가 발생한다.")
+    @DisplayName("로그인 시, 회원이 존재하지 않으면 예외가 발생한다.")
     void generateTokenException() {
         // given
         LoginRequest request = LoginFactory.createLoginRequest();
@@ -54,7 +54,7 @@ class LoginServiceTest {
     }
 
     @Test
-    @DisplayName("패스워드가 틀리면 예외가 발생한다.")
+    @DisplayName("로그인 시, 패스워드가 틀리면 예외가 발생한다.")
     void generateTokenPasswordException() {
         // given
         userRepository.save(UserFactory.create("천재 골퍼"));

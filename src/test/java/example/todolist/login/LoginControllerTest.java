@@ -5,19 +5,14 @@ import example.todolist.fixture.LoginFactory;
 import example.todolist.fixture.UserFactory;
 import example.todolist.login.dto.LoginRequest;
 import example.todolist.login.dto.LoginResponse;
-import example.todolist.todo.dto.TodoResponse;
 import example.todolist.user.UserRepository;
-import example.todolist.user.domain.User;
-import example.todolist.user.dto.UserRequest;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
-import java.util.List;
-
-import static example.todolist.user.UserControllerTest.insertUser;
+import static example.todolist.user.UserControllerTest.signUpUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginControllerTest extends AcceptanceTest {
@@ -28,7 +23,7 @@ public class LoginControllerTest extends AcceptanceTest {
     @DisplayName("로그인을 통해 토큰을 발급받을 수 있다.")
     void generateToken() {
         // given
-        insertUser(UserFactory.createUserRequest("골프천재"));
+        signUpUser(UserFactory.createUserRequest("골프천재"));
 
         // when
         LoginResponse response = login(LoginFactory.createLoginRequest());

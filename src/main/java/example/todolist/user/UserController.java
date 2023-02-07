@@ -24,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseMessage<String> insertUser(@RequestBody @Valid UserRequest request) {
-        userService.insertUser(request);
+    public ResponseMessage<String> signUp(@RequestBody @Valid UserRequest request) {
+        userService.signUp(request);
         return ResponseMessage.ok();
     }
 

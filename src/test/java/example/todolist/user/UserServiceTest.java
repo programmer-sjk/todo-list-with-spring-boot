@@ -46,12 +46,12 @@ class UserServiceTest {
 
     @Test
     @DisplayName("회원을 등록할 수 있다.")
-    void insert() {
+    void signUp() {
         // given
         UserRequest request = UserFactory.createUserRequest("골프천재");
 
         // when
-        userService.insertUser(request);
+        userService.signUp(request);
 
         // then
         User result = userRepository.findAll().get(0);

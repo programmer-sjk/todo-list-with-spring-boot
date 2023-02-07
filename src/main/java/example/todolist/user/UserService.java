@@ -7,7 +7,6 @@ import example.todolist.user.dto.UserRequest;
 import example.todolist.user.dto.UserResponse;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +31,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void insertUser(UserRequest request) {
+    public void signUp(UserRequest request) {
         String password = PasswordEncoder.encode(request.getPassword());
         userRepository.save(request.toEntity(password));
     }
@@ -51,7 +50,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String phone) {
         User user = userRepository.findByPhone(phone)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 멤버가 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 회원이 존재하지 않습니다."));
 
         return new LoginUser(user);
     }

@@ -35,15 +35,15 @@ public class TodoController {
     }
 
     @PostMapping()
-    public ResponseMessage<String> insertTodo(
+    public ResponseMessage<String> createTodo(
             @AuthenticationPrincipal LoginUser user,
             @RequestBody @Valid TodoRequest request
     ) {
-        todoService.insertTodo(user.getId(), request);
+        todoService.createTodo(user.getId(), request);
         return ResponseMessage.ok();
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/status")
     public ResponseMessage<String> updateStatus(
             @PathVariable Long id,
             @AuthenticationPrincipal LoginUser user,

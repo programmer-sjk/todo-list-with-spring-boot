@@ -47,7 +47,7 @@ public class TodoService {
     }
 
     @Transactional
-    public void insertTodo(Long userId, TodoRequest request) {
+    public void createTodo(Long userId, TodoRequest request) {
         User user = findOwner(userId);
         todoRepository.save(request.toEntity(user));
     }

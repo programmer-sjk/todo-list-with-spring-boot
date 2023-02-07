@@ -7,7 +7,7 @@ import example.todolist.fixture.UserFactory;
 import example.todolist.user.domain.User;
 import example.todolist.user.dto.UserRequest;
 import example.todolist.user.dto.UserResponse;
-import example.todolist.utils.AuthFactory;
+import example.todolist.util.AuthFactory;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -60,9 +60,9 @@ public class UserControllerTest extends AcceptanceTest {
 
     @Test
     @DisplayName("회원을 등록할 수 있다.")
-    void insert() {
+    void signUp() {
         // when
-        insertUser(UserFactory.createUserRequest("골프천재"));
+        signUpUser(UserFactory.createUserRequest("골프천재"));
 
         // then
         List<User> users = userRepository.findAll();
@@ -106,7 +106,7 @@ public class UserControllerTest extends AcceptanceTest {
                 .extract();
     }
 
-    public static void insertUser(UserRequest request) {
+    public static void signUpUser(UserRequest request) {
         RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

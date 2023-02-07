@@ -1,7 +1,6 @@
-package example.todolist.utils;
+package example.todolist.util;
 
 import example.todolist.fixture.UserFactory;
-import example.todolist.util.JwtTokenUtil;
 
 public class AuthFactory {
     public static String createLoginToken() {
