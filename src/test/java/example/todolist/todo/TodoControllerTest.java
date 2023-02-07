@@ -50,7 +50,7 @@ class TodoControllerTest extends AcceptanceTest {
     @DisplayName("가장 최근에 작성한 Todo가 없다면 204(NO_CONTENT) 상태코드가 반환된다.")
     void findRecentEmpty() {
         // given
-        createLoginUser();
+        createUser();
 
         // when
         ExtractableResponse<Response> response = findRecentTodo();
@@ -143,12 +143,12 @@ class TodoControllerTest extends AcceptanceTest {
     }
 
     private Todo createTodoWithLoginUser(String title) {
-        createLoginUser();
+        createUser();
         insertTodo(TodoFactory.createTodoRequest(title));
         return todoRepository.findAll().get(0);
     }
 
-    private void createLoginUser() {
+    private void createUser() {
         UserRequest request = UserFactory.createUserRequest("천재골퍼");
         insertUser(request);
     }

@@ -15,13 +15,11 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserRequestTest {
-    private static ValidatorFactory factory;
     private static Validator validator;
 
     @BeforeAll
     public static void init() {
-        factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @DisplayName("별명은 빈 값일 수 없다.")

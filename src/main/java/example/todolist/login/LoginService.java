@@ -33,7 +33,7 @@ public class LoginService {
     }
 
     private User authenticate(LoginRequest request) {
-        User user = userRepository.findByPhone(request.getUsername())
+        User user = userRepository.findByPhone(request.getPhone())
                 .orElseThrow(() -> new IllegalArgumentException("계정 정보가 일치하지 않습니다."));
 
         if (!PasswordEncoder.matches(request.getPassword(), user.getPassword())) {

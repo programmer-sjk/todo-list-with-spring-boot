@@ -20,7 +20,7 @@ public class LoginRequestTest {
         validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
-    @DisplayName("이름은 빈 값일 수 없다.")
+    @DisplayName("핸드폰 번호는 빈 값일 수 없다.")
     @ParameterizedTest
     @ValueSource(strings = {"", "  "})
     void validateUsername(String input) {
@@ -30,7 +30,7 @@ public class LoginRequestTest {
         // when
         Set<ConstraintViolation<LoginRequest>> violations = validator.validate(request);
         ConstraintViolation<LoginRequest> violation = violations.stream()
-                .filter(v -> v.getPropertyPath().toString().equals("username"))
+                .filter(v -> v.getPropertyPath().toString().equals("phone"))
                 .findFirst()
                 .get();
 
