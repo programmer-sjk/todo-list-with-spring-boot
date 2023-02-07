@@ -1,13 +1,10 @@
 package example.todolist.utils;
 
 import example.todolist.fixture.UserFactory;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import example.todolist.util.JwtTokenUtil;
 
 public class AuthFactory {
     public static String createLoginToken() {
-        String seed = UserFactory.COMMON_PHONE + ":" + UserFactory.COMMON_PASSWORD;
-        return "Basic " + Base64.getEncoder().encodeToString(seed.getBytes(StandardCharsets.UTF_8));
+        return "Bearer " + new JwtTokenUtil().generateToken(UserFactory.COMMON_PHONE);
     }
 }

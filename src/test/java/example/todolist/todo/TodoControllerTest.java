@@ -9,6 +9,7 @@ import example.todolist.todo.dto.TodoRequest;
 import example.todolist.todo.dto.TodoResponse;
 import example.todolist.todo.dto.TodoUpdateStatusRequest;
 import example.todolist.user.dto.UserRequest;
+import example.todolist.util.JwtTokenUtil;
 import example.todolist.utils.AuthFactory;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -27,6 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TodoControllerTest extends AcceptanceTest {
     @Autowired
     private TodoRepository todoRepository;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Test
     @DisplayName("가장 최근에 작성한 Todo를 조회할 수 있다.")
