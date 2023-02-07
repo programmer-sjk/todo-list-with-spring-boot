@@ -1,9 +1,11 @@
 package example.todolist.user;
 
 import example.todolist.common.ResponseMessage;
+import example.todolist.user.domain.LoginUser;
 import example.todolist.user.dto.UserRequest;
 import example.todolist.user.dto.UserResponse;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -29,9 +31,9 @@ public class UserController {
         return ResponseMessage.ok();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseMessage<String> withDraw(@PathVariable Long id) {
-        userService.withDraw(id, LocalDateTime.now());
+    @DeleteMapping()
+    public ResponseMessage<String> withDraw(@AuthenticationPrincipal LoginUser user) {
+        userService.withDraw(user.getId(), LocalDateTime.now());
         return ResponseMessage.ok();
     }
 }

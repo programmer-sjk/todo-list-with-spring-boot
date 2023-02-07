@@ -73,10 +73,10 @@ public class UserControllerTest extends AcceptanceTest {
     @DisplayName("회원은 탈퇴할 수 있다.")
     void withDraw() {
         // given
-        User user = userRepository.save(UserFactory.create("천재골퍼"));
+        userRepository.save(UserFactory.create("천재골퍼"));
 
         // when
-        withDrawUser(user.getId(), getLoginToken(LoginFactory.createLoginRequest()));
+        withDrawUser(getLoginToken(LoginFactory.createLoginRequest()));
 
         // then
         List<User> users = userRepository.findAll();
@@ -87,10 +87,10 @@ public class UserControllerTest extends AcceptanceTest {
     @DisplayName("로그인이 안 된 회원은 탈퇴할 수 없다.")
     void notLoginUserWithDraw() {
         // given
-        User user = userRepository.save(UserFactory.create("천재골퍼"));
+        userRepository.save(UserFactory.create("천재골퍼"));
 
         // when
-        ResponseMessage<String> response = withDrawUser(user.getId(), "empty").as(ResponseMessage.class);
+        ResponseMessage<String> response = withDrawUser("empty").as(ResponseMessage.class);
 
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
@@ -116,12 +116,12 @@ public class UserControllerTest extends AcceptanceTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> withDrawUser(Long id, String token) {
+    private ExtractableResponse<Response> withDrawUser(String token) {
         return RestAssured
                 .given().log().all()
                 .header("Authorization", AuthFactory.createLoginToken(token))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/api/users/" + id)
+                .when().delete("/api/users")
                 .then().log().all()
                 .extract();
     }
