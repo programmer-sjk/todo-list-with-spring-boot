@@ -13,16 +13,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private static final String[] ACCESS_ALLOW_APIS = {"/", "/health", "/login"};
     private final JwtAuthenticationEntryPoint authEntryPoint;
+    private final JwtAccessDeniedHandler accessDeniedHandler;
     private final JwtRequestFilter jwtRequestFilter;
 
-    public SecurityConfig(JwtAuthenticationEntryPoint authEntryPoint, JwtRequestFilter jwtRequestFilter) {
+    public SecurityConfig(
+            JwtAuthenticationEntryPoint authEntryPoint,
+            JwtRequestFilter jwtRequestFilter,
+            JwtAccessDeniedHandler accessDeniedHandler
+    ) {
         this.authEntryPoint = authEntryPoint;
         this.jwtRequestFilter = jwtRequestFilter;
+        this.accessDeniedHandler = accessDeniedHandler;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+        return http
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(ACCESS_ALLOW_APIS)
                             .permitAll()
@@ -35,9 +42,9 @@ public class SecurityConfig {
                 )
                 .csrf().disable()
                 .exceptionHandling()
-                    .authenticationEntryPoint(authEntryPoint);
-
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+                    .authenticationEntryPoint(authEntryPoint)
+                    .accessDeniedHandler(accessDeniedHandler)
+                    .and()
+                .build();
     }
 }

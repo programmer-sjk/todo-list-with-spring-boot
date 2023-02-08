@@ -27,6 +27,10 @@ public class ResponseMessage<T> {
         return new ResponseMessage<>(HttpStatus.UNAUTHORIZED.value(), message, "");
     }
 
+    public static ResponseMessage<String> forbidden(String message) {
+        return new ResponseMessage<>(HttpStatus.FORBIDDEN.value(), message, "");
+    }
+
     protected ResponseMessage(T data) {
         this.data = data;
     }

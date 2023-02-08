@@ -54,8 +54,8 @@ public class UserControllerTest extends AcceptanceTest {
         ResponseMessage<String> response = findAll(token).as(ResponseMessage.class);
 
         // then
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-        assertThat(response.getMessage()).isEqualTo("Full authentication is required to access this resource");
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+        assertThat(response.getMessage()).isEqualTo("Access Denied");
     }
 
     @Test
