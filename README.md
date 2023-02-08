@@ -120,6 +120,15 @@ src
   }
 ```
 
+- API 요청 권한이 없는 경우
+```json
+  {
+    "statusCode": 403,
+    "message": "Access Denied",
+    "data": ""
+  }
+```
+
 - 요청 값이 잘못되었을 경우 (회원가입 시, 패스워드가 누락된 경우)
 ```json
   {
@@ -151,3 +160,4 @@ src
 - 존재하지 않은 url 접근 시 공통 format 적용
 - health check API 조회 시, 응답 데이터 커스터마이징 (축소)
 - 최근 Todo 1건 조회 시, Generic Return Type (A or B 타입을 리턴할 때) 방법이 없는지
+- API 요청/응답 문서화
