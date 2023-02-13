@@ -31,6 +31,10 @@ public class ResponseMessage<T> {
         return new ResponseMessage<>(HttpStatus.FORBIDDEN.value(), message, "");
     }
 
+    public static ResponseMessage<String> notFound(String message) {
+        return new ResponseMessage<>(HttpStatus.NOT_FOUND.value(), message, "");
+    }
+
     protected ResponseMessage(T data) {
         this.data = data;
     }
