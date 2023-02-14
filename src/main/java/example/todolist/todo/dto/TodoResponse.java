@@ -7,7 +7,7 @@ public class TodoResponse {
     private String title;
     private String status;
 
-    protected TodoResponse() {}
+    private TodoResponse() {}
 
     public TodoResponse(Todo todo) {
         this.id = todo.getId();

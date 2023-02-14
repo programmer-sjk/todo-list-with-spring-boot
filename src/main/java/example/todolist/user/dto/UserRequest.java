@@ -19,7 +19,7 @@ public class UserRequest {
     @NotNull
     private Boolean allowMarketing;
 
-    protected UserRequest() {}
+    private UserRequest() {}
 
     public UserRequest(Builder builder) {
         this.name = builder.name;

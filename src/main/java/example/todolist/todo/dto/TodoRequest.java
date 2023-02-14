@@ -8,7 +8,7 @@ public class TodoRequest {
     @NotBlank
     private String title;
 
-    protected TodoRequest() {}
+    private TodoRequest() {}
 
     public TodoRequest(String title) {
         this.title = title;

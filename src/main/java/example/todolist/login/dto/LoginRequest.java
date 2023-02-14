@@ -8,7 +8,7 @@ public class LoginRequest {
     @NotBlank
     private String password;
 
-    protected LoginRequest() {}
+    private LoginRequest() {}
 
     public LoginRequest(String phone, String password) {
         this.phone = phone;

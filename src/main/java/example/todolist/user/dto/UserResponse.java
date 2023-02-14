@@ -11,7 +11,7 @@ public class UserResponse {
     private String role;
     private Boolean allowMarketing;
 
-    protected UserResponse() {}
+    private UserResponse() {}
 
     public UserResponse(User user) {
         this.name = user.getName();
