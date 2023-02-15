@@ -1,4 +1,4 @@
-package example.todolist.configure;
+package example.todolist.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import example.todolist.common.ResponseMessage;
@@ -6,22 +6,22 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 @Component
-public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void handle(
+    public void commence(
             HttpServletRequest request,
             HttpServletResponse response,
-            AccessDeniedException e
+            AuthenticationException e
     ) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         final ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(response.getOutputStream(), ResponseMessage.forbidden(e.getMessage()));
+        mapper.writeValue(response.getOutputStream(), ResponseMessage.unauthorized(e.getMessage()));
     }
 }

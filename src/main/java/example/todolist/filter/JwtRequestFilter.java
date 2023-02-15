@@ -1,4 +1,4 @@
-package example.todolist.configure;
+package example.todolist.filter;
 
 import example.todolist.user.UserService;
 import example.todolist.util.JwtTokenUtil;

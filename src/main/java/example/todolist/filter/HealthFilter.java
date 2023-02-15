@@ -1,4 +1,4 @@
-package example.todolist.configure;
+package example.todolist.filter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
