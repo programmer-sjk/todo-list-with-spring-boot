@@ -18,7 +18,8 @@ class HealthControllerTest extends AcceptanceTest {
 				.when().get("/api/health")
 				.then().log().all()
 				.extract()
-				.as(HealthResponse.class);
+				.jsonPath()
+				.getObject("data", HealthResponse.class);
 
 		// then
 		assertThat(response.applicationStatus()).isEqualTo("UP");
