@@ -20,12 +20,19 @@ src
     |  |--- PageResponse.js (페이지네이션 응답 파일)
     |  |--- ResponseMessage.js (API 응답에 사용되는 공통 포맷)
     |--- configure
-    |  |--- JwtAuthenticationEntryPoint.js (jwt 인증 예외 담당)
-    |  |--- JwtRequestFilter.js (jwt 요청 필터)
+    |  |--- FilterRegistrationConfig.js (필터 관련 설정)
     |  |--- PasswordEncoder.js (암호화, 패스워드 일치 여부 제공)
     |  |--- SecurityConfig.js (스프링 시큐리티 설정 파일)
     |--- exception
     |  |--- GlobalExceptionHandler.js (Controller에 전달된 예외 처리 담당)
+    |  |--- JwtAuthenticationEntryPoint.js (jwt 인증 예외 담당)
+    |  |--- JwtRequestFilter.js (jwt 요청 필터)
+    |--- filter
+    |  |--- HealthFilter.js (헬스체크 응답 변환 필터)
+    |  |--- JWTRequestFilter.js (토큰 기반 인증 필터)
+    |--- health
+    |  |--- dto 
+    |     |--- HealthResponse (Filter에서 사용할 응답 Response)
     |--- login
     |  |--- dto 패키지 (request, response dto 구성)
     |  |--- repository 패키지(둘 이상일때 따로 repository 패키지로 구성, 하나면 파일로 둠)
@@ -42,6 +49,7 @@ src
     |--- Application.java
  |--- test
     |--- fixture 패키지 (테스트에 필요한 엔티티, dto를 생성하는 헬퍼 함수)
+    |--- health 패키지
     |--- login 패키지
       |-- dto 패키지 (dto 테스트 함수)
       |-- ProductControllerTest.js
