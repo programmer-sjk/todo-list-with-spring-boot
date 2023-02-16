@@ -147,6 +147,15 @@ src
   }
 ```
 
+- 존재하지 않는 api 접근 시
+```json
+{
+    "statusCode": 404,
+    "message": "No endpoint GET /api/todos/ppp.",
+    "data": ""
+}
+```
+
 ## 테스트 결과
 ![img.png](images/test.PNG)
 
@@ -159,5 +168,5 @@ src
 ## 과제에 보완해야 할 것들
 - ~~존재하지 않은 url 접근 시 공통 format 적용~~ (2/14 반영)
 - ~~health check API 조회 시, 응답 데이터 커스터마이징 (축소)~~ (2/16 반영)
-- 최근 Todo 1건 조회 시, Generic Return Type (A or B 타입을 리턴할 때) 방법이 없는지
+- ~~최근 Todo 1건 조회 시, Generic Return Type (A or B 타입을 리턴할 때) 방법이 없는지~~ (2/17 반영)
 - API 요청/응답 문서화
