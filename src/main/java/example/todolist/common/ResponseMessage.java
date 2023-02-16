@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public class ResponseMessage<T> {
     private int statusCode = HttpStatus.OK.value();
     private String message = "";
-    protected T data;
+    protected T data = (T) "";
 
     public static ResponseMessage<String> ok() {
         return new ResponseMessage<>("");
@@ -15,8 +15,8 @@ public class ResponseMessage<T> {
         return new ResponseMessage<>(data);
     }
 
-    public static ResponseMessage<String> noContent() {
-        return new ResponseMessage<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(), "");
+    public static <T> ResponseMessage<T> noContent() {
+        return new ResponseMessage<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase(), null);
     }
 
     public static ResponseMessage<String> badRequest(String message) {
@@ -42,7 +42,9 @@ public class ResponseMessage<T> {
     private ResponseMessage(int statusCode, String message, T data) {
         this.statusCode = statusCode;
         this.message = message;
-        this.data = data;
+        if (data != null) {
+            this.data = data;
+        }
     }
 
     protected ResponseMessage() {}
