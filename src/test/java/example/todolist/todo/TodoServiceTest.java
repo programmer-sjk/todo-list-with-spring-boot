@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +51,10 @@ class TodoServiceTest {
         Todo recentTodo = todoRepository.save(TodoFactory.createWithUser("kafka 공부 3장", user));
 
         // when
-        TodoResponse response = todoService.findRecent(user.getId()).get();
+        TodoResponse response = todoService.findRecent(
+                user.getId(),
+                PageRequest.of(0, 1, Sort.by("id").descending())
+        ).get(0);
 
         // then
         assertThat(response.getId()).isEqualTo(recentTodo.getId());
@@ -64,7 +68,7 @@ class TodoServiceTest {
         User user = userRepository.save(UserFactory.create("골프 하수"));
 
         // when
-        Optional<TodoResponse> response = todoService.findRecent(user.getId());
+        List<TodoResponse> response = todoService.findRecent(user.getId(), PageRequest.of(1, 1));
 
         // then
         assertThat(response).isEmpty();

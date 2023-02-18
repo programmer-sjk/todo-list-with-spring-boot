@@ -38,7 +38,8 @@ class TodoControllerTest extends AcceptanceTest {
 
         // when
         TodoResponse response = findRecentTodo(token).jsonPath()
-                .getObject("data", TodoResponse.class);
+                .getList("data", TodoResponse.class)
+                .get(0);
 
         // then
         assertThat(response.getId()).isEqualTo(todo.getId());
