@@ -8,6 +8,8 @@ import example.todolist.todo.dto.TodoUpdateStatusRequest;
 import example.todolist.user.domain.LoginUser;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +25,12 @@ public class TodoController {
     }
 
     @GetMapping("/recent")
-    public ResponseMessage<TodoResponse> findRecent(@AuthenticationPrincipal LoginUser user) {
-        return todoService.findRecent(user.getId())
-                .map(ResponseMessage::ok)
-                .orElseGet(ResponseMessage::noContent);
+    public ResponseMessage<List<TodoResponse>> findRecent(
+            @AuthenticationPrincipal LoginUser user,
+            @PageableDefault(size = 1, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        List<TodoResponse> response = todoService.findRecent(user.getId(), pageable);
+        return response.isEmpty() ? ResponseMessage.noContent() : ResponseMessage.ok(response);
     }
 
     @GetMapping()

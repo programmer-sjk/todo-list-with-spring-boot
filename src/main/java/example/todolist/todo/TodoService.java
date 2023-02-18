@@ -27,9 +27,11 @@ public class TodoService {
         this.userRepository = userRepository;
     }
 
-    public Optional<TodoResponse> findRecent(Long userId) {
-        return todoRepository.findTop1ByUserIdOrderByIdDesc(userId)
-                .map(TodoResponse::new);
+    public List<TodoResponse> findRecent(Long userId, Pageable pageable) {
+         return todoRepository.findByUserId(userId, pageable)
+                 .stream()
+                 .map(TodoResponse::new)
+                 .collect(Collectors.toList());
     }
 
     public PageResponse<List<TodoResponse>> findAll(Long userId, Pageable pageable) {
