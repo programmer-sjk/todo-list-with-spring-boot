@@ -4,17 +4,10 @@ import example.todolist.configure.PasswordEncoder;
 import example.todolist.login.dto.LoginRequest;
 import example.todolist.login.dto.LoginResponse;
 import example.todolist.user.UserRepository;
-import example.todolist.user.domain.LoginUser;
 import example.todolist.user.domain.User;
-import example.todolist.user.dto.UserRequest;
 import example.todolist.util.JwtTokenUtil;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 @Transactional(readOnly = true)
 @Service

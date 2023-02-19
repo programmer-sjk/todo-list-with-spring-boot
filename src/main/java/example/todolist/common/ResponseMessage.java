@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResponseMessage<T> {
     private int statusCode = HttpStatus.OK.value();
     private String message = "";
@@ -50,6 +51,4 @@ public class ResponseMessage<T> {
             this.data = data;
         }
     }
-
-    protected ResponseMessage() {}
 }

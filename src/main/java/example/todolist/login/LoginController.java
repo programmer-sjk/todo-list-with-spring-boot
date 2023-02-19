@@ -3,13 +3,8 @@ package example.todolist.login;
 import example.todolist.common.ResponseMessage;
 import example.todolist.login.dto.LoginRequest;
 import example.todolist.login.dto.LoginResponse;
-import example.todolist.user.UserService;
-import example.todolist.user.dto.UserRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-
 @RestController
 @RequestMapping("/login")
 public class LoginController {
