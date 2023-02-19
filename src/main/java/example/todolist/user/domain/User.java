@@ -3,9 +3,7 @@ package example.todolist.user.domain;
 import example.todolist.common.BaseEntity;
 import example.todolist.todo.domain.Todo;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 
@@ -15,6 +13,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @Entity
 @Table(name = "Users")
 public class User extends BaseEntity {
@@ -48,16 +48,6 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true )
     private final List<Todo> todos = new ArrayList<>();
 
-    public User(Builder builder) {
-        this.name = builder.name;
-        this.nickname = builder.nickname;
-        this.email = builder.email;
-        this.password = builder.password;
-        this.phone = builder.phone;
-        this.role = UserRole.value(builder.role);
-        this.allowMarketing = builder.allowMarketing;
-    }
-
     public void withDraw(LocalDateTime deletedAt) {
         if (this.deletedAt != null) {
             throw new IllegalArgumentException("이미 탈퇴한 회원입니다.");
@@ -69,50 +59,6 @@ public class User extends BaseEntity {
     public void addTodo(Todo todo) {
         if (!this.todos.contains(todo)) {
             this.todos.add(todo);
-        }
-    }
-
-    public static class Builder {
-        private String name;
-        private String nickname;
-        private String email;
-        private String password;
-        private String phone;
-        private String role;
-        private boolean allowMarketing;
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder nickname(String nickname) {
-            this.nickname = nickname;
-            return this;
-        }
-        public Builder email(String email) {
-            this.email = email;
-            return this;
-        }
-        public Builder password(String password) {
-            this.password = password;
-            return this;
-        }
-        public Builder phone(String phone) {
-            this.phone = phone;
-            return this;
-        }
-        public Builder role(String role) {
-            this.role = role;
-            return this;
-        }
-        public Builder allowMarketing(boolean allowMarketing) {
-            this.allowMarketing = allowMarketing;
-            return this;
-        }
-
-        public User build() {
-            return new User(this);
         }
     }
 }

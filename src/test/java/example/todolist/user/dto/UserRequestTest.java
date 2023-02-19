@@ -27,7 +27,7 @@ public class UserRequestTest {
     @ValueSource(strings = {"", "  "})
     void validateNickname(String input) {
         // given
-        UserRequest request = new UserRequest.Builder()
+        UserRequest request = UserRequest.builder()
                 .nickname(input)
                 .build();
 
@@ -47,7 +47,7 @@ public class UserRequestTest {
     @ValueSource(strings = {"test", "test@", "@gmail.com"})
     void validateEmail(String input) {
         // given
-        UserRequest request = new UserRequest.Builder()
+        UserRequest request = UserRequest.builder()
                 .email(input)
                 .build();
 
@@ -66,7 +66,7 @@ public class UserRequestTest {
     @DisplayName("마케팅 활용 동의는 필수 값이다.")
     void validateAllowMarketing() {
         // given
-        UserRequest request = new UserRequest.Builder().build();
+        UserRequest request = UserRequest.builder().build();
 
         // when
         Set<ConstraintViolation<UserRequest>> violations = validator.validate(request);

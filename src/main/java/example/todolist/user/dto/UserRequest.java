@@ -1,15 +1,16 @@
 package example.todolist.user.dto;
 
 import example.todolist.user.domain.User;
+import example.todolist.user.domain.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class UserRequest {
     private String name;
     @NotBlank
@@ -24,74 +25,15 @@ public class UserRequest {
     @NotNull
     private Boolean allowMarketing;
 
-    public UserRequest(Builder builder) {
-        this.name = builder.name;
-        this.nickname = builder.nickname;
-        this.email = builder.email;
-        this.password = builder.password;
-        this.phone = builder.phone;
-        this.role = builder.role;
-        this.allowMarketing = builder.allowMarketing;
-    }
-
     public User toEntity(String password) {
-        return new User.Builder()
+        return User.builder()
                 .name(name)
                 .nickname(nickname)
                 .email(email)
                 .password(password)
                 .phone(phone)
-                .role(role)
+                .role(UserRole.value(role))
                 .allowMarketing(allowMarketing)
                 .build();
-    }
-
-    public static class Builder {
-        private String name;
-        private String nickname;
-        private String email;
-        private String password;
-        private String phone;
-        private String role;
-        private Boolean allowMarketing;
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder nickname(String nickname) {
-            this.nickname = nickname;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public Builder phone(String phone) {
-            this.phone = phone;
-            return this;
-        }
-
-        public Builder role(String role) {
-            this.role = role;
-            return this;
-        }
-
-        public Builder allowMarketing(Boolean allowMarketing) {
-            this.allowMarketing = allowMarketing;
-            return this;
-        }
-
-        public UserRequest build() {
-            return new UserRequest(this);
-        }
     }
 }
