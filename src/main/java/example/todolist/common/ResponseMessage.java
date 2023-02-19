@@ -1,7 +1,11 @@
 package example.todolist.common;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public class ResponseMessage<T> {
     private int statusCode = HttpStatus.OK.value();
     private String message = "";
@@ -48,16 +52,4 @@ public class ResponseMessage<T> {
     }
 
     protected ResponseMessage() {}
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public T getData() {
-        return data;
-    }
 }

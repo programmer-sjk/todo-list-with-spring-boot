@@ -1,13 +1,15 @@
 package example.todolist.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PageResponse<T> extends ResponseMessage<T> {
     private int totalPages;
     private Long totalElements;
     private int paginationSize;
-
-    private PageResponse() {}
 
     private PageResponse(Builder<T> builder) {
         super(builder.data);

@@ -3,12 +3,15 @@ package example.todolist.todo.dto;
 import example.todolist.todo.domain.Todo;
 import example.todolist.user.domain.User;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TodoRequest {
     @NotBlank
     private String title;
-
-    private TodoRequest() {}
 
     public TodoRequest(String title) {
         this.title = title;
@@ -16,9 +19,5 @@ public class TodoRequest {
 
     public Todo toEntity(User user) {
         return new Todo(title, user);
-    }
-
-    public String getTitle() {
-        return title;
     }
 }

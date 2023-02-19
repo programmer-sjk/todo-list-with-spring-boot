@@ -4,7 +4,12 @@ import example.todolist.user.domain.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserRequest {
     private String name;
     @NotBlank
@@ -18,8 +23,6 @@ public class UserRequest {
     private String role;
     @NotNull
     private Boolean allowMarketing;
-
-    private UserRequest() {}
 
     public UserRequest(Builder builder) {
         this.name = builder.name;
@@ -41,34 +44,6 @@ public class UserRequest {
                 .role(role)
                 .allowMarketing(allowMarketing)
                 .build();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public boolean getAllowMarketing() {
-        return allowMarketing;
     }
 
     public static class Builder {
