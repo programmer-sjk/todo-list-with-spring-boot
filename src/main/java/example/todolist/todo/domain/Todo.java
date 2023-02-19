@@ -3,8 +3,13 @@ package example.todolist.todo.domain;
 import example.todolist.common.BaseEntity;
 import example.todolist.user.domain.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Todo extends BaseEntity {
     @Id @GeneratedValue
@@ -18,8 +23,6 @@ public class Todo extends BaseEntity {
 
     @ManyToOne
     private User user;
-
-    protected Todo() {}
 
     public Todo(String title) {
         this.title = title;
@@ -38,21 +41,5 @@ public class Todo extends BaseEntity {
     private void setUser(User user) {
         this.user = user;
         user.addTodo(this);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public TodoStatus getStatus() {
-        return status;
-    }
-
-    public User getUser() {
-        return user;
     }
 }

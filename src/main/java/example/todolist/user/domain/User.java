@@ -3,6 +3,9 @@ package example.todolist.user.domain;
 import example.todolist.common.BaseEntity;
 import example.todolist.todo.domain.Todo;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 
@@ -10,6 +13,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "Users")
 public class User extends BaseEntity {
@@ -43,8 +48,6 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true )
     private final List<Todo> todos = new ArrayList<>();
 
-    protected User() {}
-
     public User(Builder builder) {
         this.name = builder.name;
         this.nickname = builder.nickname;
@@ -67,46 +70,6 @@ public class User extends BaseEntity {
         if (!this.todos.contains(todo)) {
             this.todos.add(todo);
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public LocalDateTime getDeletedAt() {
-        return deletedAt;
-    }
-
-    public boolean isAllowMarketing() {
-        return allowMarketing;
-    }
-
-    public List<Todo> getTodos() {
-        return todos;
     }
 
     public static class Builder {
